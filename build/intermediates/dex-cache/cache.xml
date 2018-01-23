@@ -3,30 +3,48 @@
 
     <item
         is-multidex="true"
-        jar="/Users/benjamin/.android/build-cache/99a81a5405d7b5edc89e386f4bf367f070614a8a/output/jars/classes.jar"
+        jar="/Users/benjamin/.android/build-cache/a891542d8c2d87e706882ab5ed0c0d5420cebd5b/output/jars/classes.jar"
         jumboMode="true"
         optimize="true"
         revision="26.0.1"
-        sha1="2430e711762a749feb00b3d64858ca4768251b9d">
-        <dex dex="/Users/benjamin/Documents/dev/GasAndGo/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_567165b45fff9c49a6433647e686fd5972cdb98e/classes.dex" />
+        sha1="f97cf85b0fe70d37a705111dafa6b1b418ea1650">
+        <dex dex="/Users/benjamin/Documents/dev/GasAndGo/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_095db22378e59312a9c782dbe0aadd9d1a17c326/classes.dex" />
     </item>
     <item
         is-multidex="true"
-        jar="/Users/benjamin/.android/build-cache/785946a3f588951ff1513e1ad2c916b33a4affe9/output/jars/classes.jar"
+        jar="/Users/benjamin/.android/build-cache/90f4f26562e1703efd8a1ef26ede4e66bcead32c/output/jars/classes.jar"
         jumboMode="true"
         optimize="true"
         revision="26.0.1"
-        sha1="364364bf77b4a71afc5930fc3ae57b3f0eea637c">
-        <dex dex="/Users/benjamin/Documents/dev/GasAndGo/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_3658736b24b5bc53c411912ad81c8b262b3ad382/classes.dex" />
+        sha1="2442771a5590dd4eb4bce00c2e9dca9e22e4c963">
+        <dex dex="/Users/benjamin/Documents/dev/GasAndGo/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_03fa63395717a32bb4fbddad7600964287e8d65a/classes.dex" />
     </item>
     <item
         is-multidex="true"
-        jar="/Users/benjamin/.android/build-cache/540f8a79c2880bac9c5ea7e0ef6b4a0723a27e53/output/jars/classes.jar"
+        jar="/Users/benjamin/.android/build-cache/b27fb1f4ef2d1cc296ef9714c84017db58146773/output/jars/classes.jar"
         jumboMode="true"
         optimize="true"
         revision="26.0.1"
-        sha1="fcae52a60bc07924d370b4d376116cd8f8581f54">
-        <dex dex="/Users/benjamin/Documents/dev/GasAndGo/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_35efc8fb39280307ebc2e0ef4158a3b6d191c1ba/classes.dex" />
+        sha1="e5b429c146094a612134910688d169ec08deeefb">
+        <dex dex="/Users/benjamin/Documents/dev/GasAndGo/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_3e04697546fe83f4a1d119866dfca917c1eb5ca2/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/benjamin/.android/build-cache/25da05962f531c5b086f15862fea629fe13d209c/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.1"
+        sha1="ed87ccdcb70c17d71ba4e6e4ac16afa62d3c49fb">
+        <dex dex="/Users/benjamin/Documents/dev/GasAndGo/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_ae3610a5644657491cb10aa3eb892a3155957839/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/benjamin/.android/build-cache/dc0b9d88e89cfddda16721acc9931c328cd38cec/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.1"
+        sha1="6f4138a4e065826cb044d49faea4cfd7191773d1">
+        <dex dex="/Users/benjamin/Documents/dev/GasAndGo/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_d73dc9fa20eeb16e8f3aecb46b487ba0246db309/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -39,21 +57,138 @@
     </item>
     <item
         is-multidex="true"
-        jar="/Users/benjamin/.android/build-cache/c1bb26c8dbd772b9d51076198d869982eded01d5/output/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="26.0.1"
-        sha1="70ffe00aaf049893f59d1dad57bd82992faa38ef">
-        <dex dex="/Users/benjamin/Documents/dev/GasAndGo/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_cb7d4495784ff5c5e16b434460d6b9a1568b2a73/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="/Users/benjamin/Documents/dev/GasAndGo/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
         jumboMode="true"
         optimize="true"
         revision="26.0.1"
-        sha1="d53c384235f73b663a42a0971f9deeab5b9e66a5">
+        sha1="f386a85c4a6d3433b0800347b18f7be2e36d1d64">
         <dex dex="/Users/benjamin/Documents/dev/GasAndGo/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_e9c187798c5316f3364f528152bb92bd2c8a8752/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/benjamin/.android/build-cache/6aaba0843d34a3ddde8eb743524a3bbf2a952ac6/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.1"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="/Users/benjamin/Documents/dev/GasAndGo/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_6c10787ece4850465c0e1f416190bdf40a520db3/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/benjamin/.android/build-cache/5c4baf132e30b27bb28f73ec3df24db5960f0801/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.1"
+        sha1="b62fdc4cfef174c1e456014195c83fa7de7dc041">
+        <dex dex="/Users/benjamin/Documents/dev/GasAndGo/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_8d7252d9c46dc844e2a493ca51a529041fefdbc1/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/benjamin/.android/build-cache/3c32837c876397e64ea0161914dbdd68a00bf085/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.1"
+        sha1="f428e2fbc9ed0b297e3a3f420e51e6982f66822d">
+        <dex dex="/Users/benjamin/Documents/dev/GasAndGo/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_4e8a2bd96f9f7895735ed012cb66925da9708eb4/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/benjamin/.gradle/caches/modules-2/files-2.1/android.arch.lifecycle/common/1.0.0/e414a4cb28434e25c4f6aa71426eb20cf4874ae9/common-1.0.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.1"
+        sha1="e414a4cb28434e25c4f6aa71426eb20cf4874ae9">
+        <dex dex="/Users/benjamin/Documents/dev/GasAndGo/app/build/intermediates/transforms/dex/debug/folders/1000/10/common-1.0.0_c683adf9fed672eeee7de5062a772728eb81cfaa/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/benjamin/.android/build-cache/f41540d57613ee4e8d0e98e8d804d67a30df791c/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.1"
+        sha1="1b12397bc9f342b29d9e9108978828f99a6da579">
+        <dex dex="/Users/benjamin/Documents/dev/GasAndGo/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_c4f1ee975594d2000b486bd24cf52d1cdf507d09/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/benjamin/.android/build-cache/950c9b400f0fa5fd9b476208fa24d687e6b9f10f/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.1"
+        sha1="7efef32744ca4a436492d5cf28c08698cc2af256">
+        <dex dex="/Users/benjamin/Documents/dev/GasAndGo/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_9bc3f6e10b711f257257c9b6ee30883530d3f8a8/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/benjamin/.gradle/caches/modules-2/files-2.1/android.arch.core/common/1.0.0/a2d487452376193fc8c103dd2b9bd5f2b1b44563/common-1.0.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.1"
+        sha1="a2d487452376193fc8c103dd2b9bd5f2b1b44563">
+        <dex dex="/Users/benjamin/Documents/dev/GasAndGo/app/build/intermediates/transforms/dex/debug/folders/1000/10/common-1.0.0_fcf34acefc8af2076b3ccb8822a7311a2a66fbbf/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/benjamin/.android/build-cache/472b561d27c0eb20738bd79e3ba057902c269de1/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.1"
+        sha1="43e9789bd3240271265ab30ce1be9f224843f5a8">
+        <dex dex="/Users/benjamin/Documents/dev/GasAndGo/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_86d984f67263c998336643cb11c054c9c2e9085e/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/benjamin/.android/build-cache/4460b8c3669485e7aa975b0cd46a7fddefb3b2bb/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.1"
+        sha1="e1625e48a836779b5fa141d22e5d05563aaccc9a">
+        <dex dex="/Users/benjamin/Documents/dev/GasAndGo/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_63c8517bbbd64b6eceea374dd43f99fc4b99c8b2/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/benjamin/.android/build-cache/3a0bd1009bfd738360e0b3439bd7dbe4046633a4/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.1"
+        sha1="233f60a165ae622c8b36731502ebbda0f65e1930">
+        <dex dex="/Users/benjamin/Documents/dev/GasAndGo/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_979b09598d4c40c22148648da676e279db1dd56a/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/benjamin/.android/build-cache/16141d5024a16bcae0d3198873f0a1cae2bb0036/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.1"
+        sha1="40392f30a601db5675cdf18192aab013d6fee6ec">
+        <dex dex="/Users/benjamin/Documents/dev/GasAndGo/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_06c46225b9a74beab6bea73a9419a385641e0a31/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/benjamin/.android/build-cache/5134c12157eff28cb70e37e3788e7d776922b879/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.1"
+        sha1="7c24e2e9773fb498e390ce973db382c3ddcf748e">
+        <dex dex="/Users/benjamin/Documents/dev/GasAndGo/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_6d9852d0a7483085ec241d22760af9b600a172b8/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/benjamin/.gradle/caches/modules-2/files-2.1/com.android.support/support-annotations/26.1.0/814258103cf26a15fcc26ecce35f5b7d24b73f8/support-annotations-26.1.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.1"
+        sha1="0814258103cf26a15fcc26ecce35f5b7d24b73f8">
+        <dex dex="/Users/benjamin/Documents/dev/GasAndGo/app/build/intermediates/transforms/dex/debug/folders/1000/10/support-annotations-26.1.0_4510d31d2ee21920c46127c2ec2ab1a819c87aae/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/benjamin/.android/build-cache/3d214f552ac8cf6fdc2951e584e6ad588588bf67/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.1"
+        sha1="508f50705b4fde51a16259f29c854201a3044516">
+        <dex dex="/Users/benjamin/Documents/dev/GasAndGo/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_27563ce89fb51e6c0c70f6c51db358c158b87f07/classes.dex" />
     </item>
 
 </items>
