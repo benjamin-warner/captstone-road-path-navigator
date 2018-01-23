@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "473434314247",
+    "firebase_url": "https://gasandgo-81e2d.firebaseio.com",
+    "project_id": "gasandgo-81e2d",
+    "storage_bucket": "gasandgo-81e2d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:473434314247:android:e0e109c83b67830b",
+        "android_client_info": {
+          "package_name": "com.ksucapstone.gasandgo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "473434314247-5m0k79h7fn62mqtocrao8a3d1f2m7puv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ksucapstone.gasandgo",
+            "certificate_hash": "b749dd224773c9d7bfbec8ac70724335c5608892"
+          }
+        },
+        {
+          "client_id": "473434314247-obfbds0kopc1qqcd9bonnu943069o44m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcFDfM_-Zqw44nv6J_gaRA4YbXfdq4QQA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "473434314247-obfbds0kopc1qqcd9bonnu943069o44m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
