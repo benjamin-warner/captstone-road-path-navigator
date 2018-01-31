@@ -1,9 +1,11 @@
 package com.ksucapstone.gasandgo;
 
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
+import android.support.annotation.NonNull;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -11,18 +13,16 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
-import com.ksucapstone.gasandgo.Helpers.DataSnapshotHelper;
-import com.ksucapstone.gasandgo.Models.Car;
 import com.ksucapstone.gasandgo.Repositories.DatabaseWrapper;
 
-import java.util.ArrayList;
-
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, DatabaseWrapper.DataSnapshotReceiver {
+public class MapsActivity extends GpsActivity implements OnMapReadyCallback, DatabaseWrapper.DataSnapshotReceiver, GoogleApiClient.OnConnectionFailedListener {
 
     private GoogleMap mMap;
+    private GoogleApiClient mGoogleApiClient;
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -30,8 +30,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        DatabaseWrapper databaseWrapper = new DatabaseWrapper(this);
-        databaseWrapper.queryOnceForSingleObject("cars/");
+        mGoogleApiClient = new GoogleApiClient
+                .Builder(this)
+                .addApi(Places.GEO_DATA_API)
+                .addApi(Places.PLACE_DETECTION_API)
+                .enableAutoManage(this, this)
+                .build();
+
+
+
+//        LatLng upperBound = new LatLng();
+//        LatLng lowerBound = new LatLng();
+//        LatLngBounds bounds = new LatLngBounds();
+
     }
 
 
@@ -56,8 +67,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onSnapshotReceived(DataSnapshot snapshot) {
-        ArrayList<Car> carList = new ArrayList<>();
-        DataSnapshotHelper<Car> helper = new DataSnapshotHelper<>();
-        carList = helper.getObjectListFromSnapshot(snapshot, Car.class);
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
     }
 }
