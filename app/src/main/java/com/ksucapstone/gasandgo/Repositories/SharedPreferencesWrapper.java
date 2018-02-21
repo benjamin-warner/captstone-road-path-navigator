@@ -8,7 +8,6 @@ public class SharedPreferencesWrapper {
 
     public final static String FIRST_LOGIN = "FIRST_LOGIN";
     public final static String USERNAME = "USERNAME";
-    public final static String CAN_USE_GPS = "CAN_USE_GPS";
 
     private final String PREFERENCE_FILE = "PREF_FILE";
     private Context mContext;

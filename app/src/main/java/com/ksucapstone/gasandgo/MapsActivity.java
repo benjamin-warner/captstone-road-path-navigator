@@ -1,7 +1,9 @@
 package com.ksucapstone.gasandgo;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -12,14 +14,18 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.database.DataSnapshot;
-import com.ksucapstone.gasandgo.Repositories.DatabaseWrapper;
+import com.ksucapstone.gasandgo.Helpers.GpsHelper;
+import com.ksucapstone.gasandgo.Helpers.GpsWrapper;
+import com.ksucapstone.gasandgo.Helpers.PermissionHelper;
 
-public class MapsActivity extends GpsActivity implements OnMapReadyCallback, DatabaseWrapper.DataSnapshotReceiver, GoogleApiClient.OnConnectionFailedListener {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener, GpsWrapper.LocationReceiver {
 
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
 
+    private GpsHelper mGpsHelper;
+    private final long LOCATION_REQUEST_INTERVAL = 20000;
+    private final long ACCURACY_ACQUISITION_TIME = 5000;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,6 +36,7 @@ public class MapsActivity extends GpsActivity implements OnMapReadyCallback, Dat
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        // Google API object. New APIs can be added here.
         mGoogleApiClient = new GoogleApiClient
                 .Builder(this)
                 .addApi(Places.GEO_DATA_API)
@@ -38,13 +45,9 @@ public class MapsActivity extends GpsActivity implements OnMapReadyCallback, Dat
                 .build();
 
 
-
-//        LatLng upperBound = new LatLng();
-//        LatLng lowerBound = new LatLng();
-//        LatLngBounds bounds = new LatLngBounds();
-
+        PermissionHelper.RequestGpsPermission(this);
+        mGpsHelper = new GpsHelper(this, this, LOCATION_REQUEST_INTERVAL, ACCURACY_ACQUISITION_TIME);
     }
-
 
     /**
      * Manipulates the map once available.
@@ -59,19 +62,40 @@ public class MapsActivity extends GpsActivity implements OnMapReadyCallback, Dat
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 
     @Override
-    public void onSnapshotReceived(DataSnapshot snapshot) {
+    public void onLocationReceived(final Location location) {
+        this.runOnUiThread(new Runnable() {
+            public void run() {
+                //LatLng currentLocation = new LatLng(32.705267, -117.070312);
+                LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                mMap.addMarker(new MarkerOptions().position(currentLocation).title("You are here"));
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
+            }
+        });
+    }
 
+    @Override
+    public void onPause(){
+        super.onPause();
+        mGpsHelper.stopGpsUpdates();
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        mGpsHelper.resumeGpsUpdates();
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+        PermissionHelper.SetPermissionIfAllowed(requestCode, permissions, grantResults, this);
+    }
+
 }
