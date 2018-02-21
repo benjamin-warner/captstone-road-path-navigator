@@ -18,7 +18,6 @@ public class GpsHelper {
         mGpsRunnable = new GpsRunnable();
         mRefreshInterval = refresh;
         mTimeOutDuration = timeOut;
-        mGpsHandler.post(mGpsRunnable);
     }
 
     public void stopGpsUpdates(){
