@@ -50,9 +50,9 @@ public class GpsWrapper {
         if (ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             if (mGpsEnabled)
-                mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListenerGps);
+                mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, homingAllowance, 0, locationListenerGps);
             if (mNetworkEnabled)
-                mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListenerNetwork);
+                mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, homingAllowance, 0, locationListenerNetwork);
         }
 
         mTimer = new Timer();

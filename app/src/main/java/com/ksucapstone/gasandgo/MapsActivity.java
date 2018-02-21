@@ -44,8 +44,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .enableAutoManage(this, this)
                 .build();
 
-        mGpsHelper = new GpsHelper(this, this, LOCATION_REQUEST_INTERVAL, ACCURACY_ACQUISITION_TIME);
+
         PermissionHelper.RequestGpsPermission(this);
+        mGpsHelper = new GpsHelper(this, this, LOCATION_REQUEST_INTERVAL, ACCURACY_ACQUISITION_TIME);
     }
 
     /**
@@ -64,13 +65,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     @Override
-    public void onLocationReceived(Location location) {
+    public void onLocationReceived(final Location location) {
         this.runOnUiThread(new Runnable() {
             public void run() {
-                LatLng currentLocation = new LatLng(32.705267, -117.070312);
+                //LatLng currentLocation = new LatLng(32.705267, -117.070312);
+                LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
                 mMap.addMarker(new MarkerOptions().position(currentLocation).title("You are here"));
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
-                mMap.animateCamera(CameraUpdateFactory.zoomIn());
             }
         });
     }
@@ -78,7 +79,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onPause(){
         super.onPause();
-        mGpsHelper.resumeGpsUpdates();
+        mGpsHelper.stopGpsUpdates();
     }
 
     @Override

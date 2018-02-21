@@ -1,5 +1,6 @@
 package com.ksucapstone.gasandgo.Helpers;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
@@ -26,7 +27,7 @@ public class PermissionHelper {
 
             }
             else {
-                ActivityCompat.requestPermissions(activity, new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION},
+                ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                         GPS_PERMISSION_REQUEST_CODE);
             }
         }
