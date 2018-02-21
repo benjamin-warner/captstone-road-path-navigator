@@ -43,6 +43,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .addApi(Places.PLACE_DETECTION_API)
                 .enableAutoManage(this, this)
                 .build();
+
+        mGpsHelper = new GpsHelper(this, this, LOCATION_REQUEST_INTERVAL, ACCURACY_ACQUISITION_TIME);
+        PermissionHelper.RequestGpsPermission(this);
     }
 
     /**
@@ -58,16 +61,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        mGpsHelper = new GpsHelper(this, this, LOCATION_REQUEST_INTERVAL, ACCURACY_ACQUISITION_TIME);
-        PermissionHelper.RequestGpsPermission(this);
     }
 
     @Override
     public void onLocationReceived(Location location) {
-        LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
-        mMap.addMarker(new MarkerOptions().position(currentLocation).title("You are here"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
-
+        this.runOnUiThread(new Runnable() {
+            public void run() {
+                LatLng currentLocation = new LatLng(32.705267, -117.070312);
+                mMap.addMarker(new MarkerOptions().position(currentLocation).title("You are here"));
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
+                mMap.animateCamera(CameraUpdateFactory.zoomIn());
+            }
+        });
     }
 
     @Override
