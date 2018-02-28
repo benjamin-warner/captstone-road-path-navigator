@@ -71,7 +71,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 //LatLng currentLocation = new LatLng(32.705267, -117.070312);
                 LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
                 mMap.addMarker(new MarkerOptions().position(currentLocation).title("You are here"));
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
+                //mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
+                mMap.setMyLocationEnabled(true); //create blue dot at user location
+                mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+                float zoomLevel = 17.0f; //zoom into level (2 to 21)
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, zoomLevel)); //move camera to user's location
             }
         });
     }
