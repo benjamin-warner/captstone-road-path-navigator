@@ -2,6 +2,7 @@ package com.ksucapstone.gasandgo;
 
 import android.content.Intent;
 import android.location.Location;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -52,5 +53,10 @@ public class SplashScreen extends AppCompatActivity implements GpsWrapper.Locati
     public void onResume(){
         super.onResume();
         mGpsHelper.resumeGpsUpdates();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+        PermissionHelper.SetPermissionIfAllowed(requestCode, permissions, grantResults, this);
     }
 }

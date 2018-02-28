@@ -1,6 +1,5 @@
 package com.ksucapstone.gasandgo;
 
-import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
@@ -14,9 +13,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.ksucapstone.gasandgo.Helpers.GpsHelper;
-import com.ksucapstone.gasandgo.Helpers.GpsWrapper;
-import com.ksucapstone.gasandgo.Helpers.PermissionHelper;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener{
 
@@ -70,10 +66,4 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
-        PermissionHelper.SetPermissionIfAllowed(requestCode, permissions, grantResults, this);
-    }
-
 }
