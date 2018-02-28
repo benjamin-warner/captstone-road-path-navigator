@@ -18,14 +18,11 @@ import com.ksucapstone.gasandgo.Helpers.GpsHelper;
 import com.ksucapstone.gasandgo.Helpers.GpsWrapper;
 import com.ksucapstone.gasandgo.Helpers.PermissionHelper;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener, GpsWrapper.LocationReceiver {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener{
 
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
-
-    private GpsHelper mGpsHelper;
-    private final long LOCATION_REQUEST_INTERVAL = 20000;
-    private final long ACCURACY_ACQUISITION_TIME = 5000;
+    private LatLng mUserLocation;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,9 +41,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .enableAutoManage(this, this)
                 .build();
 
-
-        PermissionHelper.RequestGpsPermission(this);
-        mGpsHelper = new GpsHelper(this, this, LOCATION_REQUEST_INTERVAL, ACCURACY_ACQUISITION_TIME);
+        double latitude = getIntent().getDoubleExtra("LATITUDE",0.0);
+        double longitude = getIntent().getDoubleExtra("LONGITUDE",0.0);
+        mUserLocation = new LatLng(latitude, longitude);
     }
 
     /**
@@ -61,35 +58,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-    }
-
-    @Override
-    public void onLocationReceived(final Location location) {
-        this.runOnUiThread(new Runnable() {
-            public void run() {
-                //LatLng currentLocation = new LatLng(32.705267, -117.070312);
-                LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                mMap.addMarker(new MarkerOptions().position(currentLocation).title("You are here"));
-                //mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
-                mMap.setMyLocationEnabled(true); //create blue dot at user location
-                mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-                float zoomLevel = 17.0f; //zoom into level (2 to 21)
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, zoomLevel)); //move camera to user's location
-            }
-        });
-    }
-
-    @Override
-    public void onPause(){
-        super.onPause();
-        mGpsHelper.stopGpsUpdates();
-    }
-
-    @Override
-    public void onResume(){
-        super.onResume();
-        mGpsHelper.resumeGpsUpdates();
+        mMap.addMarker(new MarkerOptions().position(mUserLocation).title("You are here"));
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
+        mMap.setMyLocationEnabled(true); //create blue dot at user location
+        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        float zoomLevel = 17.0f; //zoom into level (2 to 21)
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mUserLocation, zoomLevel)); //move camera to user's location
     }
 
     @Override

@@ -1,29 +1,56 @@
 package com.ksucapstone.gasandgo;
 
 import android.content.Intent;
+import android.location.Location;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class SplashScreen extends AppCompatActivity {
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.ksucapstone.gasandgo.Helpers.GpsHelper;
+import com.ksucapstone.gasandgo.Helpers.GpsWrapper;
+import com.ksucapstone.gasandgo.Helpers.PermissionHelper;
 
-    int loadTime = 4000;
+public class SplashScreen extends AppCompatActivity implements GpsWrapper.LocationReceiver {
+
+    private GpsHelper mGpsHelper;
+
+    private final long LOCATION_REQUEST_INTERVAL = 20000;
+    private final long ACCURACY_ACQUISITION_TIME = 5000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
-        Thread myThread = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    sleep(loadTime);
-                    Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
-                    startActivity(intent);
-                    finish();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-        myThread.start();
+
+        PermissionHelper.RequestGpsPermission(this);
+        mGpsHelper = new GpsHelper(this, this, LOCATION_REQUEST_INTERVAL, ACCURACY_ACQUISITION_TIME);
+
+    }
+
+    @Override
+    public void onLocationReceived(final Location location) {
+        mGpsHelper.stopGpsUpdates();
+        double latitude = location.getLatitude();
+        double longitude = location.getLongitude();
+        Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+        intent.putExtra("LATITUDE", latitude);
+        intent.putExtra("LONGITUDE", longitude);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        mGpsHelper.stopGpsUpdates();
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        mGpsHelper.resumeGpsUpdates();
     }
 }
