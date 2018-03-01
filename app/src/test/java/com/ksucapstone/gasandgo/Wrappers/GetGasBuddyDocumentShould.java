@@ -1,7 +1,5 @@
 package com.ksucapstone.gasandgo.Wrappers;
 
-import com.ksucapstone.gasandgo.GasBuddyWrapper;
-
 import org.jsoup.nodes.Document;
 import org.junit.Test;
 import static org.junit.Assert.*;

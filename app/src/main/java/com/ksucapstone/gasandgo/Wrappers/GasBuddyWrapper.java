@@ -1,4 +1,4 @@
-package com.ksucapstone.gasandgo;
+package com.ksucapstone.gasandgo.Wrappers;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.ksucapstone.gasandgo.Models.GasStationModel;
