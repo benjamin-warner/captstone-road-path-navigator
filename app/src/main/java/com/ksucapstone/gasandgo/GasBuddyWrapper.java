@@ -15,6 +15,7 @@ public class GasBuddyWrapper {
 
     private static String GasStationDivClass = "styles__station___2iQjH";
     private static String GasStationAddressDivClass = "styles__address___8IK98";
+    private static String GasStationPriceDivClass = "styles__price___3DxO5";
 
     public static List<String> GetListOfGasPricesNearLatitudeLongitude(LatLng latLng){
         String gasBuddyUrl = BuildGasBuddyUrlFromLatitudeLongitude(latLng);
@@ -28,6 +29,12 @@ public class GasBuddyWrapper {
 
     public static String ExtractAddressFromParentElement(Element element){
         return element.getElementsByClass(GasStationAddressDivClass).text();
+    }
+
+    public static double ExtractPriceFromParentElement(Element element){
+        String price = element.getElementsByClass(GasStationPriceDivClass).text();
+        price = price.replaceAll("[^\\d.]", "");
+        return Double.valueOf(price);
     }
 
     public static Document GetDocumentFromUrl(String url){
