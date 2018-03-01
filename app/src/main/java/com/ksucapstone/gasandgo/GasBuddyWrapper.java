@@ -4,6 +4,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
@@ -13,6 +14,7 @@ import java.util.List;
 public class GasBuddyWrapper {
 
     private static String GasStationDivClass = "styles__station___2iQjH";
+    private static String GasStationAddressDivClass = "styles__address___8IK98";
 
     public static List<String> GetListOfGasPricesNearLatitudeLongitude(LatLng latLng){
         String gasBuddyUrl = BuildGasBuddyUrlFromLatitudeLongitude(latLng);
@@ -22,6 +24,10 @@ public class GasBuddyWrapper {
 
     public static Elements GetGasStationElementsFromDocument(Document document){
         return document.body().getElementsByClass(GasStationDivClass);
+    }
+
+    public static String ExtractAddressFromParentElement(Element element){
+        return element.getElementsByClass(GasStationAddressDivClass).text();
     }
 
     public static Document GetDocumentFromUrl(String url){
