@@ -6,7 +6,7 @@ import com.ksucapstone.gasandgo.GasBuddyWrapper;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class GetGasBuddyUrlForLatitudeLongitudeShould {
+public class BuildGasBuddyUrlForLatitudeLongitudeShould {
 
     @Test
     public void returnValidUrlForKentOhio() throws Exception {
