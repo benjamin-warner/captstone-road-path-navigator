@@ -21,8 +21,12 @@ public class GasBuddyWrapper {
         String gasBuddyUrl = BuildGasBuddyUrlFromLatitudeLongitude(latLng);
         Document gasBuddyDocument = GetDocumentFromUrl(gasBuddyUrl);
         Elements gasStationElements = GetGasStationElementsFromDocument(gasBuddyDocument);
+        return MapGasStationElementsToArrayList(gasStationElements);
+    }
+
+    public static ArrayList<GasStationModel> MapGasStationElementsToArrayList(Elements elements){
         ArrayList<GasStationModel> gasStations = new ArrayList<>();
-        for (Element element: gasStationElements) {
+        for (Element element: elements) {
             GasStationModel gasStation = new GasStationModel();
             gasStation.address = ExtractAddressFromParentElement(element);
             gasStation.price = ExtractPriceFromParentElement(element);
