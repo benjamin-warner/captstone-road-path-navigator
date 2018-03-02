@@ -18,12 +18,14 @@ import com.ksucapstone.gasandgo.AsyncTasks.GetHttpAsync;
 import com.ksucapstone.gasandgo.Helpers.ManifestDataHelper;
 import com.ksucapstone.gasandgo.Helpers.UrlBuilder;
 import com.ksucapstone.gasandgo.Models.GasStationModel;
+import com.ksucapstone.gasandgo.Models.PlacesApiResponsePlace;
+import com.ksucapstone.gasandgo.Models.PlacesApiResponseGeometry;
 import com.ksucapstone.gasandgo.Models.PlacesApiResponseObject;
 import com.ksucapstone.gasandgo.Wrappers.GasBuddyWrapper;
 
 import java.util.ArrayList;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener, GetGasStationsAsync.GetGasStationsCallback, GetHttpAsync.ResponseCallback<PlacesApiResponseObject> {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener, GetGasStationsAsync.GetGasStationsCallback{
 
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
@@ -82,14 +84,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onGasStationsReceived(ArrayList<GasStationModel> gasStations) {
-        GetHttpAsync getHttpAsync = new GetHttpAsync(PlacesApiResponseObject.class, this);
-        String apiKey = ManifestDataHelper.GetApiKey(this);
-        String url = UrlBuilder.BuildPlacesUrlForAddress(gasStations.get(0).address, apiKey);
-        getHttpAsync.execute(url);
-    }
-
-    @Override
-    public void onResponseReceived(PlacesApiResponseObject places) {
-        derp = places;
+        final ArrayList<PlacesApiResponseGeometry> gasStationGeos = new ArrayList<>();
+        GetHttpAsync getHttpAsync = new GetHttpAsync(PlacesApiResponseObject.class, new GetHttpAsync.ResponseCallback<PlacesApiResponseObject>() {
+            @Override
+            public void onResponseReceived(PlacesApiResponseObject response) {
+                mMap.addMarker(new MarkerOptions().position(new LatLng(response.results.get(0).geometry.location.lat,response.results.get(0).geometry.location.lng)));
+            }
+        });
+        for(GasStationModel gasStation : gasStations) {
+            String apiKey = ManifestDataHelper.GetApiKey(this);
+            String url = UrlBuilder.BuildPlacesUrlForAddress(gasStation.address, apiKey);
+            getHttpAsync.execute(url);
+        }
     }
 }
