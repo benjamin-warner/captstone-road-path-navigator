@@ -13,12 +13,22 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.ksucapstone.gasandgo.AsyncTasks.GetGasStationsAsync;
+import com.ksucapstone.gasandgo.AsyncTasks.GetHttpAsync;
+import com.ksucapstone.gasandgo.Helpers.ManifestDataHelper;
+import com.ksucapstone.gasandgo.Helpers.UrlBuilder;
+import com.ksucapstone.gasandgo.Models.GasStationModel;
+import com.ksucapstone.gasandgo.Models.PlacesApiResponseObject;
+import com.ksucapstone.gasandgo.Wrappers.GasBuddyWrapper;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener{
+import java.util.ArrayList;
+
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener, GetGasStationsAsync.GetGasStationsCallback, GetHttpAsync.ResponseCallback<PlacesApiResponseObject> {
 
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
     private LatLng mUserLocation;
+    private PlacesApiResponseObject derp;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,6 +50,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         double latitude = getIntent().getDoubleExtra("LATITUDE",0.0);
         double longitude = getIntent().getDoubleExtra("LONGITUDE",0.0);
         mUserLocation = new LatLng(latitude, longitude);
+
+        GetGasStationsAsync getGasStationsAsync = new GetGasStationsAsync(this, new GasBuddyWrapper());
+        getGasStationsAsync.execute(mUserLocation);
     }
 
     /**
@@ -55,15 +68,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.addMarker(new MarkerOptions().position(mUserLocation).title("You are here"));
+
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
-        mMap.setMyLocationEnabled(true); //create blue dot at user location
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-        float zoomLevel = 17.0f; //zoom into level (2 to 21)
+        float zoomLevel = 11.0f; //zoom into level (2 to 21)
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mUserLocation, zoomLevel)); //move camera to user's location
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+    @Override
+    public void onGasStationsReceived(ArrayList<GasStationModel> gasStations) {
+        GetHttpAsync getHttpAsync = new GetHttpAsync(PlacesApiResponseObject.class, this);
+        String apiKey = ManifestDataHelper.GetApiKey(this);
+        String url = UrlBuilder.BuildPlacesUrlForAddress(gasStations.get(0).address, apiKey);
+        getHttpAsync.execute(url);
+    }
+
+    @Override
+    public void onResponseReceived(PlacesApiResponseObject places) {
+        derp = places;
     }
 }

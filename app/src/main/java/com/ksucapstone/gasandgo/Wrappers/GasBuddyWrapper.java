@@ -11,6 +11,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class GasBuddyWrapper implements IGasStationGetter{
 
@@ -47,6 +48,8 @@ public class GasBuddyWrapper implements IGasStationGetter{
     public static double ExtractPriceFromParentElement(Element element){
         String price = element.getElementsByClass(GasStationPriceDivClass).text();
         price = price.replaceAll("[^\\d.]", "");
+        if(Objects.equals(price, ""))
+            return -5.;
         return Double.valueOf(price);
     }
 
