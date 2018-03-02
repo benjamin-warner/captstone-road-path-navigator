@@ -13,15 +13,10 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.ksucapstone.gasandgo.AsyncTasks.GetGasStationsAsync;
-import com.ksucapstone.gasandgo.AsyncTasks.GetHttpAsync;
 import com.ksucapstone.gasandgo.Helpers.GeoHelper;
-import com.ksucapstone.gasandgo.Helpers.ManifestDataHelper;
-import com.ksucapstone.gasandgo.Helpers.UrlBuilder;
 import com.ksucapstone.gasandgo.Models.GasStationModel;
-import com.ksucapstone.gasandgo.Models.PlacesApiResponsePlace;
-import com.ksucapstone.gasandgo.Models.PlacesApiResponseGeometry;
-import com.ksucapstone.gasandgo.Models.PlacesApiResponseObject;
 import com.ksucapstone.gasandgo.Wrappers.GasBuddyWrapper;
 
 import java.util.ArrayList;
@@ -88,6 +83,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             LatLng location = GeoHelper.getLocationFromAddress(this, gasStation.address);
             gasStation.latLng = location;
             mMap.addMarker(new MarkerOptions().position(gasStation.latLng).title("$"+String.valueOf(gasStation.price)));
+
         }
     }
 }
