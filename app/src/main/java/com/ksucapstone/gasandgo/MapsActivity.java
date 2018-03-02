@@ -15,6 +15,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.ksucapstone.gasandgo.AsyncTasks.GetGasStationsAsync;
 import com.ksucapstone.gasandgo.AsyncTasks.GetHttpAsync;
+import com.ksucapstone.gasandgo.Helpers.GeoHelper;
 import com.ksucapstone.gasandgo.Helpers.ManifestDataHelper;
 import com.ksucapstone.gasandgo.Helpers.UrlBuilder;
 import com.ksucapstone.gasandgo.Models.GasStationModel;
@@ -30,7 +31,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
     private LatLng mUserLocation;
-    private PlacesApiResponseObject derp;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -84,17 +84,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onGasStationsReceived(ArrayList<GasStationModel> gasStations) {
-        final ArrayList<PlacesApiResponseGeometry> gasStationGeos = new ArrayList<>();
-        GetHttpAsync getHttpAsync = new GetHttpAsync(PlacesApiResponseObject.class, new GetHttpAsync.ResponseCallback<PlacesApiResponseObject>() {
-            @Override
-            public void onResponseReceived(PlacesApiResponseObject response) {
-                mMap.addMarker(new MarkerOptions().position(new LatLng(response.results.get(0).geometry.location.lat,response.results.get(0).geometry.location.lng)));
-            }
-        });
-        for(GasStationModel gasStation : gasStations) {
-            String apiKey = ManifestDataHelper.GetApiKey(this);
-            String url = UrlBuilder.BuildPlacesUrlForAddress(gasStation.address, apiKey);
-            getHttpAsync.execute(url);
+        for(GasStationModel gasStation : gasStations){
+            LatLng location = GeoHelper.getLocationFromAddress(this, gasStation.address);
+            gasStation.latLng = location;
+            mMap.addMarker(new MarkerOptions().position(gasStation.latLng).title(String.valueOf(gasStation.price)));
         }
     }
 }
