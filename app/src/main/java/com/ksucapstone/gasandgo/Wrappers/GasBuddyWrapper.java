@@ -11,6 +11,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class GasBuddyWrapper implements IGasStationGetter{
 
@@ -25,7 +26,7 @@ public class GasBuddyWrapper implements IGasStationGetter{
         return MapGasStationElementsToArrayList(gasStationElements);
     }
 
-    public ArrayList<GasStationModel> MapGasStationElementsToArrayList(Elements elements){
+    public static ArrayList<GasStationModel> MapGasStationElementsToArrayList(Elements elements){
         ArrayList<GasStationModel> gasStations = new ArrayList<>();
         for (Element element: elements) {
             GasStationModel gasStation = new GasStationModel();
@@ -36,21 +37,23 @@ public class GasBuddyWrapper implements IGasStationGetter{
         return gasStations;
     }
 
-    public Elements GetGasStationElementsFromDocument(Document document){
+    public static Elements GetGasStationElementsFromDocument(Document document){
         return document.body().getElementsByClass(GasStationDivClass);
     }
 
-    public String ExtractAddressFromParentElement(Element element){
+    public static String ExtractAddressFromParentElement(Element element){
         return element.getElementsByClass(GasStationAddressDivClass).text();
     }
 
-    public double ExtractPriceFromParentElement(Element element){
+    public static double ExtractPriceFromParentElement(Element element){
         String price = element.getElementsByClass(GasStationPriceDivClass).text();
         price = price.replaceAll("[^\\d.]", "");
+        if(Objects.equals(price, ""))
+            return -5.;
         return Double.valueOf(price);
     }
 
-    public Document GetDocumentFromUrl(String url){
+    public static Document GetDocumentFromUrl(String url){
         Document gasBuddyDocument = null;
         try {
             gasBuddyDocument = Jsoup.connect(url).get();
@@ -60,7 +63,7 @@ public class GasBuddyWrapper implements IGasStationGetter{
         return gasBuddyDocument;
     }
 
-    public String BuildGasBuddyUrlFromLatitudeLongitude(LatLng latLng){
+    public static String BuildGasBuddyUrlFromLatitudeLongitude(LatLng latLng){
         String urlBase = "https://www.gasbuddy.com/home";
         String fuelTypeParameter = "&fuel=1";
         String latLongParameter = "?search=" + String.valueOf(latLng.latitude) + "%2C" + String.valueOf(latLng.longitude);
