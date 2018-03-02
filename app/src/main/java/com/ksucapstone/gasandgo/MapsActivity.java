@@ -87,7 +87,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         for(GasStationModel gasStation : gasStations){
             LatLng location = GeoHelper.getLocationFromAddress(this, gasStation.address);
             gasStation.latLng = location;
-            mMap.addMarker(new MarkerOptions().position(gasStation.latLng).title(String.valueOf(gasStation.price)));
+            mMap.addMarker(new MarkerOptions().position(gasStation.latLng).title("$"+String.valueOf(gasStation.price)));
         }
     }
 }
