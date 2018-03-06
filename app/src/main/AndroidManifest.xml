@@ -10,6 +10,8 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
+    <user-permisssion android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -40,6 +42,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".MapsActivity" />
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".ProfileActivity"></activity>
     </application>
 
 </manifest>
