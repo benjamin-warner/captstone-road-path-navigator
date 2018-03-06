@@ -10,12 +10,14 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.ksucapstone.gasandgo.Helpers.GpsHelper;
 import com.ksucapstone.gasandgo.Helpers.GpsWrapper;
 import com.ksucapstone.gasandgo.Helpers.PermissionHelper;
 
 public class SplashScreen extends AppCompatActivity implements GpsWrapper.LocationReceiver {
 
+    private FirebaseAuth firebaseAuth;
     private GpsHelper mGpsHelper;
 
     private final long LOCATION_REQUEST_INTERVAL = 20000;
@@ -29,6 +31,15 @@ public class SplashScreen extends AppCompatActivity implements GpsWrapper.Locati
         PermissionHelper.RequestGpsPermission(this);
         mGpsHelper = new GpsHelper(this, this, LOCATION_REQUEST_INTERVAL, ACCURACY_ACQUISITION_TIME);
 
+        firebaseAuth = FirebaseAuth.getInstance();
+        if (firebaseAuth.getCurrentUser() != null) {
+            //profile activity here (user already logged in)
+            finish();
+            startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+        } else { //go to signup page
+            finish();
+            startActivity(new Intent(getApplicationContext(), SignupActivity.class));
+        }
     }
 
     @Override
