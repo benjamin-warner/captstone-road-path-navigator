@@ -14,6 +14,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.ksucapstone.gasandgo.AsyncTasks.ConvertAddressesAsync;
 import com.ksucapstone.gasandgo.AsyncTasks.GetGasStationsAsync;
 import com.ksucapstone.gasandgo.Helpers.GeoHelper;
 import com.ksucapstone.gasandgo.Models.GasStationModel;
@@ -44,8 +45,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .enableAutoManage(this, this)
                 .build();
 
-        double latitude = getIntent().getDoubleExtra("LATITUDE",0.0);
-        double longitude = getIntent().getDoubleExtra("LONGITUDE",0.0);
+        double latitude = getIntent().getDoubleExtra("LATITUDE", 0.0);
+        double longitude = getIntent().getDoubleExtra("LONGITUDE", 0.0);
         mUserLocation = new LatLng(latitude, longitude);
 
         GetGasStationsAsync getGasStationsAsync = new GetGasStationsAsync(this, new GasBuddyWrapper());
@@ -74,7 +75,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
+        finish();
     }
 
     @Override
@@ -82,7 +83,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         for(GasStationModel gasStation : gasStations){
             LatLng location = GeoHelper.getLocationFromAddress(this, gasStation.address);
             gasStation.latLng = location;
-            mMap.addMarker(new MarkerOptions().position(gasStation.latLng).title("$"+String.valueOf(gasStation.price)));
+            if(gasStation.latLng != null) {
+                mMap.addMarker(new MarkerOptions().position(gasStation.latLng).title("$" + String.valueOf(gasStation.price)));
+            }
 
         }
     }
