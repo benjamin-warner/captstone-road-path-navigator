@@ -13,8 +13,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PolylineOptions;
-import com.ksucapstone.gasandgo.AsyncTasks.ConvertAddressesAsync;
 import com.ksucapstone.gasandgo.AsyncTasks.GetGasStationsAsync;
 import com.ksucapstone.gasandgo.Helpers.GeoHelper;
 import com.ksucapstone.gasandgo.Models.GasStationModel;
