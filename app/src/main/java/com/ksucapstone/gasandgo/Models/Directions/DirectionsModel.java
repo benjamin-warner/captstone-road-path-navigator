@@ -5,10 +5,10 @@ import com.ksucapstone.gasandgo.Models.GoogleApiLocation;
 import java.util.ArrayList;
 
 public class DirectionsModel {
-    ArrayList<Step> steps;
-    NumberWithLabel distance;
-    NumberWithLabel duration;
-    GoogleApiLocation start_location;
-    GoogleApiLocation end_location;
-    String overview_polyline;
+    public ArrayList<Step> steps;
+    public NumberWithLabel distance;
+    public NumberWithLabel duration;
+    public GoogleApiLocation start_location;
+    public GoogleApiLocation end_location;
+    public String overview_polyline;
 }
