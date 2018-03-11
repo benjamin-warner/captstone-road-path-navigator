@@ -21,7 +21,6 @@ public class DirectionsIteratorShould {
         steps.add(StepHelper.MakeStep(fourMilesInMeters, new LatLng(0,0)));
         steps.add(StepHelper.MakeStep(fourMilesInMeters, new LatLng(1,1)));
         steps.add(StepHelper.MakeStep(fourMilesInMeters, new LatLng(2,2)));
-        steps.add(StepHelper.MakeStep(fourMilesInMeters, new LatLng(3,3)));
 
         DirectionsModel directionsModel = new DirectionsModel();
         directionsModel.steps = steps;
@@ -32,6 +31,25 @@ public class DirectionsIteratorShould {
 
         ArrayList<LatLng> locations = directionsIterator.FindRefillPointsForCar(car);
         assertEquals(4, locations.size());
+    }
+
+    @Test
+    public void returnThreeRefillLocationsForFourLongSteps() throws Exception {
+        ArrayList<Step> steps = new ArrayList<>();
+        int threeMilesInMeters = (int)DistanceHelper.MilesToMeters(3);
+        steps.add(StepHelper.MakeStep(threeMilesInMeters, new LatLng(0,0)));
+        steps.add(StepHelper.MakeStep(threeMilesInMeters, new LatLng(1,1)));
+        steps.add(StepHelper.MakeStep(threeMilesInMeters, new LatLng(2,2)));
+
+        DirectionsModel directionsModel = new DirectionsModel();
+        directionsModel.steps = steps;
+
+        CarModel car = CarHelper.MakeCar(1, 2);
+
+        DirectionsIterator directionsIterator = new DirectionsIterator(directionsModel);
+
+        ArrayList<LatLng> locations = directionsIterator.FindRefillPointsForCar(car);
+        assertEquals(3, locations.size());
     }
 
     @Test
