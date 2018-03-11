@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class DirectionsIterator {
 
-    ArrayList<Step> steps;
+    private ArrayList<Step> steps;
 
     public DirectionsIterator(DirectionsModel directionsModel){
         steps = directionsModel.steps;
@@ -21,7 +21,7 @@ public class DirectionsIterator {
         ArrayList<LatLng> refillPoints = new ArrayList<>();
         for(Step step : steps){
             currentTakeCapacity = currentTakeCapacity - (step.distance.value / car.Mpg);
-            if(currentTakeCapacity < (car.TankCapacity / 5)){
+            if(currentTakeCapacity < (car.TankCapacity / 4)){
                 LatLng refillLocation = new LatLng(step.start_location.lat, step.start_location.lng);
                 refillPoints.add(refillLocation);
                 currentTakeCapacity = car.TankCapacity;
