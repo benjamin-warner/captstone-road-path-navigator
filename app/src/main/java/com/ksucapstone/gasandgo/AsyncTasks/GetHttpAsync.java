@@ -6,15 +6,7 @@ import com.google.gson.Gson;
 import com.ksucapstone.gasandgo.Helpers.WebRequest;
 import com.ksucapstone.gasandgo.Helpers.WebRequester;
 
-public class GetHttpAsync extends AsyncTask<String, Void, WebRequest>{
-
-    private ResponseCallback callback;
-    private Class responseClass;
-
-    public GetHttpAsync(Class expectedResponseClass, ResponseCallback responseCallback ){
-        responseClass = expectedResponseClass;
-        callback = responseCallback;
-    }
+public abstract class GetHttpAsync extends AsyncTask<String, Void, WebRequest>{
 
     @Override
     protected WebRequest doInBackground(String... params) {
@@ -25,11 +17,8 @@ public class GetHttpAsync extends AsyncTask<String, Void, WebRequest>{
 
     @Override
     protected void onPostExecute(WebRequest response){
-        callback.onResponseReceived(new Gson().fromJson(response.ResultJson, responseClass));
+        parseResponse(response.ResultJson);
     }
 
-
-    public interface ResponseCallback<T> {
-        void onResponseReceived(T obj);
-    }
+    abstract void parseResponse(String jsonResponse);
 }
