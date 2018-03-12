@@ -13,7 +13,7 @@ public class GetGasStationsAsync extends AsyncTask<LatLng, Void, ArrayList<GasSt
     private GetGasStationsCallback mCallback;
     private IGasStationGetter mGasStationGetter;
 
-    public GetGasStationsAsync(GetGasStationsCallback callback, IGasStationGetter gasBuddyWrapper){
+    public GetGasStationsAsync(IGasStationGetter gasBuddyWrapper, GetGasStationsCallback callback){
         mCallback = callback;
         mGasStationGetter = gasBuddyWrapper;
     }

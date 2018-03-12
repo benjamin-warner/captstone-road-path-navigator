@@ -18,8 +18,10 @@ public class GeoHelper {
             location = new LatLng(address.getLatitude(), address.getLongitude() );
         }
         catch (IOException ex) {
-
             ex.printStackTrace();
+        }
+        catch (IndexOutOfBoundsException e){
+            location = null;
         }
         return location;
     }
