@@ -13,7 +13,7 @@ public class DirectionsIterator {
     private ArrayList<Step> steps;
 
     public DirectionsIterator(DirectionsModel directionsModel){
-        steps = directionsModel.steps;
+        steps = directionsModel.legs.get(0).steps;
     }
 
     public ArrayList<LatLng> FindRefillPointsForCar(CarModel car){
