@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.ksucapstone.gasandgo.Helpers.StringHelpers;
 import com.ksucapstone.gasandgo.Models.Directions.Step;
 import com.ksucapstone.gasandgo.R;
 
@@ -30,7 +31,7 @@ public class DirectionsAdapter extends ArrayAdapter<Step> {
         }
 
         TextView directionText = view.findViewById(R.id.direction_text);
-        directionText.setText(step.html_instructions);
+        directionText.setText(StringHelpers.RemoveHtmlTags(step.html_instructions));
 
         TextView directionDistance = view.findViewById(R.id.direction_distance);
         directionDistance.setText(step.distance.text);
