@@ -5,6 +5,8 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -16,6 +18,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.ksucapstone.gasandgo.ArrayAdapters.DirectionsAdapter;
 import com.ksucapstone.gasandgo.AsyncTasks.GetDirectionsAsync;
 import com.ksucapstone.gasandgo.AsyncTasks.GetGasStationsAsync;
 import com.ksucapstone.gasandgo.Helpers.ManifestDataHelper;
@@ -26,6 +29,7 @@ import com.ksucapstone.gasandgo.Iterators.DirectionsIterator;
 import com.ksucapstone.gasandgo.Models.CarModel;
 import com.ksucapstone.gasandgo.Models.Directions.DirectionsModel;
 import com.ksucapstone.gasandgo.Models.Directions.Leg;
+import com.ksucapstone.gasandgo.Models.Directions.Step;
 import com.ksucapstone.gasandgo.Models.GasStationModel;
 import com.ksucapstone.gasandgo.Wrappers.DirectionsWrapper;
 import com.ksucapstone.gasandgo.Wrappers.GasBuddyWrapper;
@@ -64,8 +68,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         CarModel testCar = new CarModel();
         testCar.Mpg = 15;
         testCar.TankCapacity = 8;
+        String origin = getIntent().getStringExtra("origin");
+        String destination = getIntent().getStringExtra("destination");
+
         DirectionsWrapper directionsWrapper = new DirectionsWrapper(this, this)
-                .setRoute("Kent, OH","Pittsburgh, PA").setCar(testCar);
+                .setRoute(origin, destination).setCar(testCar);
         directionsWrapper.getDirections();
     }
 
@@ -90,5 +97,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         for(Leg leg : directions.legs){
             mMap.addMarker(new MarkerOptions().position(new LatLng(leg.end_location.lat, leg.end_location.lng)));
         }
+
+        ArrayList<Step> steps = new ArrayList<>();
+        for(Leg leg : directions.legs)
+            steps.addAll(leg.steps);
+
+        DirectionsAdapter mAdapter = new DirectionsAdapter(this, R.layout.leg_info, steps);
+        ListView directionsListview = findViewById(R.id.directions_listview);
+        directionsListview.setAdapter(mAdapter);
     }
 }

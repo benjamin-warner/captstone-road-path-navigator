@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -48,7 +49,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 finish();
                 break;
             case R.id.buttonGetRoute:
-                startActivity(new Intent(this, MapsActivity.class));
+                Intent intent = new Intent(this, MapsActivity.class);
+                String origin = ((EditText)findViewById(R.id.origin)).getText().toString();
+                intent.putExtra("origin", origin);
+                String dest = ((EditText)findViewById(R.id.destination)).getText().toString();
+                intent.putExtra("destination", dest);
+                startActivity(intent);
                 break;
         }
     }
