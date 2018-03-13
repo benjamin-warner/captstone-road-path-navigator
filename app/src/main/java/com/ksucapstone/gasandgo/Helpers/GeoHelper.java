@@ -7,6 +7,7 @@ import android.location.Geocoder;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.IOException;
+import java.util.List;
 
 public class GeoHelper {
 
@@ -14,14 +15,16 @@ public class GeoHelper {
         Geocoder coder = new Geocoder(activity);
         LatLng location = null;
         try {
-            Address address = coder.getFromLocationName(addressString, 1).get(0);
-            location = new LatLng(address.getLatitude(), address.getLongitude() );
+            List<Address> addresses = coder.getFromLocationName(addressString, 1);
+
+            if(addresses.size() > 0) {
+                double latitude = addresses.get(0).getLatitude();
+                double longitude = addresses.get(0).getLongitude();
+                location = new LatLng(latitude, longitude);
+            }
         }
         catch (IOException ex) {
             ex.printStackTrace();
-        }
-        catch (IndexOutOfBoundsException e){
-            location = null;
         }
         return location;
     }
