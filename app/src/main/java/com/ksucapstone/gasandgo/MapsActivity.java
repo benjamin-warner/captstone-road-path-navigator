@@ -68,8 +68,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         CarModel testCar = new CarModel();
         testCar.Mpg = 15;
         testCar.TankCapacity = 8;
+        String origin = getIntent().getStringExtra("origin");
+        String destination = getIntent().getStringExtra("destination");
+
         DirectionsWrapper directionsWrapper = new DirectionsWrapper(this, this)
-                .setRoute("Kent, OH","Pittsburgh, PA").setCar(testCar);
+                .setRoute(origin, destination).setCar(testCar);
         directionsWrapper.getDirections();
     }
 
