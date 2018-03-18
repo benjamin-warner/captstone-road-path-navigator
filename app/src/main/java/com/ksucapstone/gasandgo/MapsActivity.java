@@ -1,11 +1,8 @@
 package com.ksucapstone.gasandgo;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -19,20 +16,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.ksucapstone.gasandgo.ArrayAdapters.DirectionsAdapter;
-import com.ksucapstone.gasandgo.AsyncTasks.GetDirectionsAsync;
-import com.ksucapstone.gasandgo.AsyncTasks.GetGasStationsAsync;
-import com.ksucapstone.gasandgo.Helpers.ManifestDataHelper;
 import com.ksucapstone.gasandgo.Helpers.PolylineDecoder;
-import com.ksucapstone.gasandgo.Helpers.UrlBuilder;
-import com.ksucapstone.gasandgo.Interfaces.IGasStationGetter;
-import com.ksucapstone.gasandgo.Iterators.DirectionsIterator;
 import com.ksucapstone.gasandgo.Models.CarModel;
 import com.ksucapstone.gasandgo.Models.Directions.DirectionsModel;
 import com.ksucapstone.gasandgo.Models.Directions.Leg;
 import com.ksucapstone.gasandgo.Models.Directions.Step;
-import com.ksucapstone.gasandgo.Models.GasStationModel;
 import com.ksucapstone.gasandgo.Wrappers.DirectionsWrapper;
-import com.ksucapstone.gasandgo.Wrappers.GasBuddyWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,21 +78,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     @Override
-    public void onDirectionsComputed(DirectionsModel directions) {
-        List<LatLng> routePoints = PolylineDecoder.decode(directions.polyline);
+    public void onPathComputed(DirectionsModel direction, ArrayList<LatLng> refillPoints) {
+        List<LatLng> routePoints = PolylineDecoder.decode(direction.polyline);
         mMap.addPolyline(new PolylineOptions().addAll(routePoints).color(0xff0000ff).width(20));
-        LatLng start = new LatLng(directions.legs.get(0).start_location.lat,directions.legs.get(0).start_location.lng);
-        mMap.addMarker(new MarkerOptions().position(start));
-        for(Leg leg : directions.legs){
-            mMap.addMarker(new MarkerOptions().position(new LatLng(leg.end_location.lat, leg.end_location.lng)));
+        for(LatLng refillPoint : refillPoints){
+            mMap.addMarker(new MarkerOptions().position(refillPoint));
         }
+        populateDirections(direction.legs);
+    }
 
+    public void populateDirections(ArrayList<Leg> routeLegs){
         ArrayList<Step> steps = new ArrayList<>();
-        for(Leg leg : directions.legs)
+        for(Leg leg : routeLegs)
             steps.addAll(leg.steps);
 
         DirectionsAdapter mAdapter = new DirectionsAdapter(this, R.layout.leg_info, steps);
-        ListView directionsListview = findViewById(R.id.directions_listview);
-        directionsListview.setAdapter(mAdapter);
+        ListView directionsListView = findViewById(R.id.directions_listview);
+        directionsListView.setAdapter(mAdapter);
     }
+
 }
