@@ -13,21 +13,25 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.ksucapstone.gasandgo.ArrayAdapters.DirectionsAdapter;
+import com.ksucapstone.gasandgo.AsyncTasks.GetGasStationsAsync;
 import com.ksucapstone.gasandgo.Helpers.PolylineDecoder;
 import com.ksucapstone.gasandgo.Models.CarModel;
 import com.ksucapstone.gasandgo.Models.Directions.DirectionsModel;
 import com.ksucapstone.gasandgo.Models.Directions.Leg;
 import com.ksucapstone.gasandgo.Models.Directions.Step;
+import com.ksucapstone.gasandgo.Models.GasStationModel;
 import com.ksucapstone.gasandgo.Wrappers.DirectionsWrapper;
+import com.ksucapstone.gasandgo.Wrappers.GasBuddyWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
-        GoogleApiClient.OnConnectionFailedListener, DirectionsWrapper.Callback{
+        GoogleApiClient.OnConnectionFailedListener, DirectionsWrapper.Callback, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
@@ -68,6 +72,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.setOnMarkerClickListener(this);
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(37.5301914,-106.8468267), 4.f));
     }
@@ -97,4 +102,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         directionsListView.setAdapter(mAdapter);
     }
 
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        marker.setAlpha(0.25f);
+        LatLng refillPoint = marker.getPosition();
+        GetGasStationsAsync getGasStationsAsync = new GetGasStationsAsync(new GasBuddyWrapper(), new GetGasStationsAsync.GetGasStationsCallback() {
+            @Override
+            public void onGasStationsReceived(ArrayList<GasStationModel> gasStations) {
+                openGasStationDialog(gasStations);
+            }
+        });
+        getGasStationsAsync.execute(refillPoint);
+        return false;
+    }
+
+    public void openGasStationDialog(ArrayList<GasStationModel> gasStations){
+        StationPickerFragment pickerFragment = new StationPickerFragment();
+        Bundle stations = new Bundle();
+        stations.putSerializable("GAS", gasStations);
+        pickerFragment.setArguments(stations);
+        pickerFragment.show(getFragmentManager(), StationPickerFragment.TAG);
+    }
 }
