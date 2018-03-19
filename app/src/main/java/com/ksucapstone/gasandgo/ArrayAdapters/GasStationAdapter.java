@@ -30,8 +30,10 @@ public class GasStationAdapter extends ArrayAdapter<GasStationModel> {
             itemView = inflater.inflate(R.layout.gas_list_item, null);
         }
 
-        TextView stationName = itemView.findViewById(R.id.checkbox_gas);
-        String distance = String.valueOf(stationModel.distance) + "mi";
+        TextView stationName = itemView.findViewById(R.id.gas_distance);
+
+        String distance = String.valueOf(stationModel.distance);
+        distance = distance.substring(0, 3) +  "Miles off course";
         stationName.setText(distance);
 
         TextView priceTV = itemView.findViewById(R.id.gas_price);
