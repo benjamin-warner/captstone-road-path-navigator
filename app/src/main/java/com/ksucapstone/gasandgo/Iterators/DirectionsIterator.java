@@ -1,6 +1,5 @@
 package com.ksucapstone.gasandgo.Iterators;
 
-import android.location.Location;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -22,24 +21,7 @@ public class DirectionsIterator {
         pathCoords = PolylineDecoder.decode(directionsModel.polyline);
     }
 
-    public ArrayList<LatLng> FindRefillPointsForCar(CarModel car){
-        double currentTakeCapacity = car.TankCapacity;
-
-        ArrayList<LatLng> refillPoints = new ArrayList<>();
-        for(Step step : steps){
-            double stepDistanceInMiles = DistanceHelper.MetersToMiles(step.distance.value);
-            currentTakeCapacity = currentTakeCapacity - (stepDistanceInMiles / car.Mpg);
-            if(currentTakeCapacity < (car.TankCapacity / 4)){
-                LatLng refillLocation = new LatLng(step.start_location.lat, step.start_location.lng);
-                refillPoints.add(refillLocation);
-                currentTakeCapacity = car.TankCapacity;
-            }
-        }
-
-        return  refillPoints;
-    }
-
-    public List<LatLng> FindRefillPoints(CarModel car){
+    public List<LatLng> FindRefillPointsForCar(CarModel car){
 
         double currentTankCapacity = car.TankCapacity;
 

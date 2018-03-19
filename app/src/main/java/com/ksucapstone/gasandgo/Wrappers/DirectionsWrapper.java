@@ -10,7 +10,6 @@ import com.ksucapstone.gasandgo.Iterators.DirectionsIterator;
 import com.ksucapstone.gasandgo.Models.CarModel;
 import com.ksucapstone.gasandgo.Models.Directions.DirectionsModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DirectionsWrapper implements GetDirectionsAsync.Callback {
@@ -48,7 +47,7 @@ public class DirectionsWrapper implements GetDirectionsAsync.Callback {
     @Override
     public void onResponseReceived(DirectionsModel directions) {
         DirectionsIterator directionsIterator = new DirectionsIterator(directions);
-        refillNeededLocations = directionsIterator.FindRefillPoints(car);
+        refillNeededLocations = directionsIterator.FindRefillPointsForCar(car);
         callback.onPathComputed(directions, refillNeededLocations);
     }
 

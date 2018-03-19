@@ -55,7 +55,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mUserLocation = new LatLng(latitude, longitude);
 
         CarModel testCar = new CarModel();
-        testCar.Mpg = 15;
+        testCar.Mpg = 32;
         testCar.TankCapacity = 8;
         String origin = getIntent().getStringExtra("origin");
         String destination = getIntent().getStringExtra("destination");
