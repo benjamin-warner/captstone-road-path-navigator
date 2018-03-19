@@ -1,5 +1,6 @@
 package com.ksucapstone.gasandgo;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
@@ -18,6 +19,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.ksucapstone.gasandgo.ArrayAdapters.DirectionsAdapter;
 import com.ksucapstone.gasandgo.AsyncTasks.GetGasStationsAsync;
+import com.ksucapstone.gasandgo.Helpers.DistanceHelper;
+import com.ksucapstone.gasandgo.Helpers.GeoHelper;
 import com.ksucapstone.gasandgo.Helpers.PolylineDecoder;
 import com.ksucapstone.gasandgo.Models.CarModel;
 import com.ksucapstone.gasandgo.Models.Directions.DirectionsModel;
@@ -105,11 +108,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public boolean onMarkerClick(Marker marker) {
         marker.setAlpha(0.25f);
-        LatLng refillPoint = marker.getPosition();
+        final LatLng refillPoint = marker.getPosition();
+        final Activity thiz = this;
         GetGasStationsAsync getGasStationsAsync = new GetGasStationsAsync(new GasBuddyWrapper(), new GetGasStationsAsync.GetGasStationsCallback() {
             @Override
             public void onGasStationsReceived(ArrayList<GasStationModel> gasStations) {
-                openGasStationDialog(gasStations);
+                ArrayList<GasStationModel> stationsAvailable = new ArrayList<>();
+                for(GasStationModel station : gasStations){
+                    LatLng stationLoc = GeoHelper.getLocationFromAddress(thiz, station.address);
+                    if(stationLoc != null){
+                        GasStationModel availableStation = station;
+                        availableStation.distance = DistanceHelper.MilesBetween(refillPoint, stationLoc);
+                        stationsAvailable.add(availableStation);
+                    }
+                }
+                openGasStationDialog(stationsAvailable);
             }
         });
         getGasStationsAsync.execute(refillPoint);

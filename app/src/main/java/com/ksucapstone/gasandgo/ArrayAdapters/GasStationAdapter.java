@@ -1,6 +1,5 @@
 package com.ksucapstone.gasandgo.ArrayAdapters;
 
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,9 +31,12 @@ public class GasStationAdapter extends ArrayAdapter<GasStationModel> {
         }
 
         TextView stationName = itemView.findViewById(R.id.checkbox_gas);
-        stationName.setText(stationModel.address);
-        TextView price = itemView.findViewById(R.id.gas_price);
-        price.setText(String.valueOf(stationModel.price));
+        String distance = String.valueOf(stationModel.distance) + "mi";
+        stationName.setText(distance);
+
+        TextView priceTV = itemView.findViewById(R.id.gas_price);
+        String price = "$" + String.valueOf(stationModel.price);
+        priceTV.setText(price);
 
         itemView.setOnClickListener(listener);
 
