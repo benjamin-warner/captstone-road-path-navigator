@@ -78,7 +78,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     @Override
-    public void onPathComputed(DirectionsModel direction, ArrayList<LatLng> refillPoints) {
+    public void onPathComputed(DirectionsModel direction, List<LatLng> refillPoints) {
         List<LatLng> routePoints = PolylineDecoder.decode(direction.polyline);
         mMap.addPolyline(new PolylineOptions().addAll(routePoints).color(0xff0000ff).width(20));
         for(LatLng refillPoint : refillPoints){

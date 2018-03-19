@@ -11,11 +11,11 @@ import com.ksucapstone.gasandgo.Models.CarModel;
 import com.ksucapstone.gasandgo.Models.Directions.DirectionsModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DirectionsWrapper implements GetDirectionsAsync.Callback {
 
-    private ArrayList<LatLng> refillNeededLocations;
-    private int locationIndex;
+    private List<LatLng> refillNeededLocations;
     private Callback callback;
     private Activity activity;
 
@@ -48,11 +48,11 @@ public class DirectionsWrapper implements GetDirectionsAsync.Callback {
     @Override
     public void onResponseReceived(DirectionsModel directions) {
         DirectionsIterator directionsIterator = new DirectionsIterator(directions);
-        refillNeededLocations = directionsIterator.FindRefillPointsForCar(car);
+        refillNeededLocations = directionsIterator.FindRefillPoints(car);
         callback.onPathComputed(directions, refillNeededLocations);
     }
 
     public interface Callback{
-        void onPathComputed(DirectionsModel direction, ArrayList<LatLng> refillPoints);
+        void onPathComputed(DirectionsModel direction, List<LatLng> refillPoints);
     }
 }
