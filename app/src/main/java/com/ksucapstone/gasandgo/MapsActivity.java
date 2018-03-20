@@ -1,6 +1,7 @@
 package com.ksucapstone.gasandgo;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
@@ -42,11 +43,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleApiClient mGoogleApiClient;
     private LatLng mUserLocation;
     private SupportMapFragment mMapFragment;
+    private PopupProgressMessage mLoadingMessage;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        mLoadingMessage = new PopupProgressMessage(this, false, ProgressDialog.STYLE_SPINNER);
+        mLoadingMessage.showWithMessage("Crunging numbers");
 
         mMapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -106,6 +111,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.moveCamera(cu);
 
         populateDirections(direction.legs);
+        mLoadingMessage.dismiss();
         getSupportFragmentManager().beginTransaction().show(mMapFragment).commit();
     }
 
