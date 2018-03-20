@@ -9,11 +9,13 @@ import android.widget.ListView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -39,16 +41,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
     private LatLng mUserLocation;
+    private SupportMapFragment mMapFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        mMapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-
+        mMapFragment.getMapAsync(this);
 
         mGoogleApiClient = new GoogleApiClient
                 .Builder(this)
@@ -77,7 +79,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         mMap.setOnMarkerClickListener(this);
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(37.5301914,-106.8468267), 4.f));
+        getSupportFragmentManager().beginTransaction().hide(mMapFragment).commit();
     }
 
     @Override
@@ -92,7 +94,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         for(LatLng refillPoint : refillPoints){
             mMap.addMarker(new MarkerOptions().position(refillPoint));
         }
+
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        for (LatLng point : routePoints) {
+            builder.include(point);
+        }
+        LatLngBounds bounds = builder.build();
+
+        int padding = 50; // offset from edges of the map in pixels
+        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+        mMap.moveCamera(cu);
+
         populateDirections(direction.legs);
+        getSupportFragmentManager().beginTransaction().show(mMapFragment).commit();
     }
 
     public void populateDirections(ArrayList<Leg> routeLegs){
@@ -109,13 +123,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public boolean onMarkerClick(Marker marker) {
         marker.setAlpha(0.25f);
         final LatLng refillPoint = marker.getPosition();
-        final Activity thiz = this;
+        final Activity thisActivity = this;
         GetGasStationsAsync getGasStationsAsync = new GetGasStationsAsync(new GasBuddyWrapper(), new GetGasStationsAsync.GetGasStationsCallback() {
             @Override
             public void onGasStationsReceived(ArrayList<GasStationModel> gasStations) {
                 ArrayList<GasStationModel> stationsAvailable = new ArrayList<>();
                 for(GasStationModel station : gasStations){
-                    LatLng stationLoc = GeoHelper.getLocationFromAddress(thiz, station.address);
+                    LatLng stationLoc = GeoHelper.getLocationFromAddress(thisActivity, station.address);
                     if(stationLoc != null){
                         GasStationModel availableStation = station;
                         availableStation.distance = DistanceHelper.MilesBetween(refillPoint, stationLoc);
