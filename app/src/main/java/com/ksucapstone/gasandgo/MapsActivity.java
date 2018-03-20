@@ -51,7 +51,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps);
 
         mLoadingMessage = new PopupProgressMessage(this, false, ProgressDialog.STYLE_SPINNER);
-        mLoadingMessage.showWithMessage("Crunging numbers");
+        mLoadingMessage.showWithMessage("Crunching numbers");
 
         mMapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
