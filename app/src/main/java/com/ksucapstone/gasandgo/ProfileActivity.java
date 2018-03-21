@@ -1,10 +1,13 @@
 package com.ksucapstone.gasandgo;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -72,12 +75,17 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 finish();
                 break;
             case R.id.buttonGetRoute:
-                /*Intent intent = new Intent(this, MapsActivity.class);
-                String origin = ((EditText)findViewById(R.id.origin)).getText().toString();
+                View currentFocus = this.getCurrentFocus();
+                if (currentFocus != null) {
+                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
+                Intent intent = new Intent(this, MapsActivity.class);
+                String origin = ((EditText)findViewById(R.id.place_autocomplete_fragment2)).getText().toString();
                 intent.putExtra("origin", origin);
-                String dest = ((EditText)findViewById(R.id.destination)).getText().toString();
+                String dest = ((EditText)findViewById(R.id.place_autocomplete_fragment)).getText().toString();
                 intent.putExtra("place_autocomplete_fragment", dest);
-                startActivity(intent);*/
+                startActivity(intent);
                 break;
         }
     }
