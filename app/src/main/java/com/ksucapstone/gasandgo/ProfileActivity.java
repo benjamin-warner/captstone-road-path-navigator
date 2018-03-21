@@ -1,13 +1,17 @@
 package com.ksucapstone.gasandgo;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -37,6 +41,25 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         buttonLogout.setOnClickListener(this);
         findViewById(R.id.buttonGetRoute).setOnClickListener(this);
+
+        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                // TODO: Get info about the selected place.
+                //Log.i(TAG, "Place: " + place.getName());
+                String placeName = place.getName().toString();
+                Toast.makeText(ProfileActivity.this, ""+placeName, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(Status status) {
+                // TODO: Handle the error.
+                //Log.i(TAG, "An error occurred: " + status);
+            }
+        });
     }
 
     @Override
@@ -49,12 +72,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 finish();
                 break;
             case R.id.buttonGetRoute:
-                Intent intent = new Intent(this, MapsActivity.class);
+                /*Intent intent = new Intent(this, MapsActivity.class);
                 String origin = ((EditText)findViewById(R.id.origin)).getText().toString();
                 intent.putExtra("origin", origin);
                 String dest = ((EditText)findViewById(R.id.destination)).getText().toString();
-                intent.putExtra("destination", dest);
-                startActivity(intent);
+                intent.putExtra("place_autocomplete_fragment", dest);
+                startActivity(intent);*/
                 break;
         }
     }
