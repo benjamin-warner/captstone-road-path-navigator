@@ -23,6 +23,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private FirebaseAuth firebaseAuth;
     private TextView textViewUserEmail;
     private Button buttonLogout;
+    private String destination;
+    private String origin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,18 +53,25 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                // TODO: Get info about the selected place.
-                //Log.i(TAG, "Place: " + place.getName());
-                String placeName = place.getName().toString();
-                Toast.makeText(ProfileActivity.this, ""+placeName, Toast.LENGTH_SHORT).show();
+                destination = place.getName().toString();
             }
-
             @Override
-            public void onError(Status status) {
-                // TODO: Handle the error.
-                //Log.i(TAG, "An error occurred: " + status);
-            }
+            public void onError(Status status) {}
         });
+
+        PlaceAutocompleteFragment autocompleteFragment2 = (PlaceAutocompleteFragment)
+                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment2);
+
+        autocompleteFragment2.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                origin = place.getName().toString();
+            }
+            @Override
+            public void onError(Status status) {}
+        });
+
+
     }
 
     @Override
@@ -81,10 +90,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 }
                 Intent intent = new Intent(this, MapsActivity.class);
-                String origin = ((EditText)findViewById(R.id.place_autocomplete_fragment2)).getText().toString();
                 intent.putExtra("origin", origin);
-                String dest = ((EditText)findViewById(R.id.place_autocomplete_fragment)).getText().toString();
-                intent.putExtra("place_autocomplete_fragment", dest);
+                intent.putExtra("destination", destination);
                 startActivity(intent);
                 break;
         }
