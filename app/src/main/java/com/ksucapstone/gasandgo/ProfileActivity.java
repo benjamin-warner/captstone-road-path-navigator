@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -72,12 +73,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 finish();
                 break;
             case R.id.buttonGetRoute:
-                /*Intent intent = new Intent(this, MapsActivity.class);
-                String origin = ((EditText)findViewById(R.id.origin)).getText().toString();
+                Intent intent = new Intent(this, MapsActivity.class);
+                String origin = ((EditText)findViewById(R.id.place_autocomplete_fragment2)).getText().toString();
                 intent.putExtra("origin", origin);
-                String dest = ((EditText)findViewById(R.id.destination)).getText().toString();
+                String dest = ((EditText)findViewById(R.id.place_autocomplete_fragment)).getText().toString();
                 intent.putExtra("place_autocomplete_fragment", dest);
-                startActivity(intent);*/
+                startActivity(intent);
                 break;
         }
     }
