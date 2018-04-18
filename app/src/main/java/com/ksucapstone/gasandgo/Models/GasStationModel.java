@@ -6,4 +6,5 @@ public class GasStationModel {
     public String address;
     public double price;
     public LatLng latLng;
+    public double distance;
 }
