@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "473434314247-o623fd2iffsml49qs4oulr9hhs9b7j4b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ksucapstone.gasandgo",
+            "certificate_hash": "44b2ed1c361b4a083b52bfd2749cc89161e0b4bf"
+          }
+        },
+        {
           "client_id": "473434314247-5m0k79h7fn62mqtocrao8a3d1f2m7puv.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

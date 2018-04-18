@@ -1,0 +1,71 @@
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.ksucapstone.gasandgo.TabbedLogin$PlaceholderFragment">
+
+    <EditText
+        android:id="@+id/emailText_Login"
+        android:layout_width="373dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="68dp"
+        android:ems="10"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/passwordText_Login"
+        android:layout_width="373dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="12dp"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/emailText_Login" />
+
+    <Button
+        android:id="@+id/button_Login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:background="@color/darker_blue"
+        android:text="Log In"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/passwordText_Login" />
+
+    <!--
+    <TextView
+        android:id="@+id/needToRegister_Login"
+        android:layout_width="wrap_content"
+        android:layout_height="18dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="24dp"
+        android:text="Sign up here"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordText_Login" />
+    -->
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="20dp" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="44dp"
+        android:layout_marginStart="156dp"
+        android:text="Gas &amp; Go. 2018"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline" />
+
+
+</android.support.constraint.ConstraintLayout>
