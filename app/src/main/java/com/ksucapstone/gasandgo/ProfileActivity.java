@@ -26,7 +26,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         if(firebaseAuth.getCurrentUser() == null) {
             finish();
-            startActivity(new Intent(this, LoginActivity.class));
+            startActivity(new Intent(this, Tab1Login.class)); //change may cause error, if so change back to 'TabbedLogin'
         }
 
         FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -45,7 +45,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
             case R.id.buttonLogout:
                 firebaseAuth.signOut();
-                startActivity(new Intent(this, LoginActivity.class));
+                startActivity(new Intent(this, TabbedLogin.class));
                 finish();
                 break;
             case R.id.buttonGetRoute:

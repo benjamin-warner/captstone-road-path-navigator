@@ -38,7 +38,7 @@ public class SplashScreen extends AppCompatActivity implements GpsWrapper.Locati
             startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
         } else { //go to signup page
             finish();
-            startActivity(new Intent(getApplicationContext(), SignupActivity.class));
+            startActivity(new Intent(getApplicationContext(), Tab2SignUp.class)); //change may cause error, if so change back to 'TabbedLogin'
         }
     }
 
