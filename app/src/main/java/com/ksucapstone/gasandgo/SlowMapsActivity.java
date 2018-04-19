@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -25,6 +26,7 @@ import com.ksucapstone.gasandgo.Models.CarModel;
 import com.ksucapstone.gasandgo.Models.Directions.DirectionsModel;
 import com.ksucapstone.gasandgo.Models.Directions.Leg;
 import com.ksucapstone.gasandgo.Models.Directions.Step;
+import com.ksucapstone.gasandgo.Models.RefillModel;
 import com.ksucapstone.gasandgo.Wrappers.SlowDirectionsWrapper;
 
 import java.util.ArrayList;
@@ -87,7 +89,7 @@ public class SlowMapsActivity extends FragmentActivity implements OnMapReadyCall
     }
 
     @Override
-    public void onDirectionsComputed(DirectionsModel directions) {
+    public void onDirectionsComputed(DirectionsModel directions, List<RefillModel> refillPoints) {
         List<LatLng> routePoints = PolylineDecoder.decode(directions.polyline);
         mMap.addPolyline(new PolylineOptions().addAll(routePoints).color(0xff0000ff).width(20));
         LatLng start = new LatLng(directions.legs.get(0).start_location.lat,directions.legs.get(0).start_location.lng);
@@ -112,7 +114,20 @@ public class SlowMapsActivity extends FragmentActivity implements OnMapReadyCall
 
         DirectionsAdapter mAdapter = new DirectionsAdapter(this, R.layout.leg_info, steps);
         ListView directionsListview = findViewById(R.id.directions_listview);
+
         View header = View.inflate(this, R.layout.drive_stats, null);
+
+        double cost = 0;
+        double gallons = 0;
+        for(RefillModel refill : refillPoints){
+            cost += refill.cost;
+            gallons += refill.gallonsFilled;
+        }
+        ((TextView)header.findViewById(R.id.trip_cost)).append(String.valueOf(cost));
+        ((TextView)header.findViewById(R.id.trip_gallons)).append(String.valueOf(gallons));
+//        ((TextView)header.findViewById(R.id.trip_distance)).setText();
+//        ((TextView)header.findViewById(R.id.trip_time)).setText();
+
         directionsListview.addHeaderView(header);
         directionsListview.setAdapter(mAdapter);
 

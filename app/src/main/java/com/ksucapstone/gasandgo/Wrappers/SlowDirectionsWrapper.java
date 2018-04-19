@@ -14,6 +14,7 @@ import com.ksucapstone.gasandgo.Iterators.DirectionsIterator;
 import com.ksucapstone.gasandgo.Models.CarModel;
 import com.ksucapstone.gasandgo.Models.Directions.DirectionsModel;
 import com.ksucapstone.gasandgo.Models.GasStationModel;
+import com.ksucapstone.gasandgo.Models.RefillModel;
 import com.ksucapstone.gasandgo.Repositories.MemoryCache;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ import java.util.List;
 
 public class SlowDirectionsWrapper implements GetDirectionsAsync.Callback, GetGasStationsAsync.GetGasStationsCallback {
 
-    private List<LatLng> refillNeededLocations;
+    private List<RefillModel> refillNeededLocations;
     private int locationIndex;
     private ArrayList<GasStationModel> stationsToStopAt;
     private Callback callback;
@@ -64,21 +65,21 @@ public class SlowDirectionsWrapper implements GetDirectionsAsync.Callback, GetGa
             getGasStations();
         }
         else{
-            callback.onDirectionsComputed(directions);
+            callback.onDirectionsComputed(directions, refillNeededLocations);
         }
 
     }
 
     @Override
     public void onGasStationsReceived(ArrayList<GasStationModel> gasStations) {
-        LatLng searchLocation = refillNeededLocations.get(locationIndex);
+        LatLng searchLocation = refillNeededLocations.get(locationIndex).location;
         Log.d(this.getClass().getSimpleName(), "ADDING " + searchLocation.toString() + " TO CACHE!");
         MemoryCache.GetInstance().put(searchLocation.toString(), gasStations);
         handleStationResponse(gasStations);
     }
 
     private void getGasStations(){
-        LatLng searchLocation = refillNeededLocations.get(locationIndex);
+        LatLng searchLocation = refillNeededLocations.get(locationIndex).location;
         Log.d(this.getClass().getSimpleName(), "SEARCHING FOR " + searchLocation.toString() + " IN CACHE.");
         if(MemoryCache.GetInstance().get(searchLocation.toString()) != null){
             Log.d(this.getClass().getSimpleName(), searchLocation.toString() + " FOUND IN CACHE! HOORAY!");
@@ -93,7 +94,9 @@ public class SlowDirectionsWrapper implements GetDirectionsAsync.Callback, GetGa
     }
 
     private void handleStationResponse(ArrayList<GasStationModel> gasStations) {
-        stationsToStopAt.add(gasStations.get(0));
+        GasStationModel stationToUse = gasStations.get(0);
+        stationsToStopAt.add(stationToUse);
+        refillNeededLocations.get(locationIndex).cost = refillNeededLocations.get(locationIndex).gallonsFilled * stationToUse.price;
         locationIndex++;
         if(locationIndex < refillNeededLocations.size()) {
             getGasStations();
@@ -102,7 +105,7 @@ public class SlowDirectionsWrapper implements GetDirectionsAsync.Callback, GetGa
             GetDirectionsAsync getFinalRouteTask = new GetDirectionsAsync(new GetDirectionsAsync.Callback() {
                 @Override
                 public void onResponseReceived(DirectionsModel directions) {
-                    callback.onDirectionsComputed(directions);
+                    callback.onDirectionsComputed(directions, refillNeededLocations);
                 }
             });
             String directionsUrl = UrlBuilder.BuildDirectionUrl(source, destination, ManifestDataHelper.GetApiKey(activity), stationsToStopAt);
@@ -118,12 +121,12 @@ public class SlowDirectionsWrapper implements GetDirectionsAsync.Callback, GetGa
             public void run() {
                 IGasStationGetter stationGetter = new GasBuddyWrapper();
                 GetGasStationsAsync getGasStationsAsync = new GetGasStationsAsync(stationGetter, callback);
-                getGasStationsAsync.execute(refillNeededLocations.get(locationIndex));
+                getGasStationsAsync.execute(refillNeededLocations.get(locationIndex).location);
             }
         },scrapeDelay);
     }
 
     public interface Callback{
-        void onDirectionsComputed(DirectionsModel directions);
+        void onDirectionsComputed(DirectionsModel directions, List<RefillModel> refills);
     }
 }
