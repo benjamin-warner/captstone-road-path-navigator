@@ -2,6 +2,7 @@ package com.ksucapstone.gasandgo.Wrappers;
 
 import android.app.Activity;
 import android.os.Handler;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.ksucapstone.gasandgo.AsyncTasks.GetDirectionsAsync;
@@ -86,6 +87,7 @@ public class SlowDirectionsWrapper implements GetDirectionsAsync.Callback, GetGa
         }
     }
     private void scrapeGasBuddy(){
+        Log.d(this.getClass().getSimpleName(), "Scraping Gas Buddy");
         final GetGasStationsAsync.GetGasStationsCallback callback = this;
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {

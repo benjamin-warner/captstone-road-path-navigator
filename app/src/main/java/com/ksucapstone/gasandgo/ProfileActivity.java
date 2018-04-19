@@ -46,6 +46,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         buttonLogout.setOnClickListener(this);
         findViewById(R.id.buttonGetRoute).setOnClickListener(this);
+        findViewById(R.id.buttonDoItForMe).setOnClickListener(this);
 
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
@@ -77,23 +78,33 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View view) {
         switch(view.getId()){
-
             case R.id.buttonLogout:
                 firebaseAuth.signOut();
                 startActivity(new Intent(this, TabbedLogin.class));
                 finish();
                 break;
             case R.id.buttonGetRoute:
-                View currentFocus = this.getCurrentFocus();
-                if (currentFocus != null) {
-                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                }
+                hideKeyboard();
                 Intent intent = new Intent(this, MapsActivity.class);
                 intent.putExtra("origin", origin);
                 intent.putExtra("destination", destination);
                 startActivity(intent);
                 break;
+            case R.id.buttonDoItForMe:
+                hideKeyboard();
+                Intent doItForMe = new Intent(this, SlowMapsActivity.class);
+                doItForMe.putExtra("origin", origin);
+                doItForMe.putExtra("destination", destination);
+                startActivity(doItForMe);
+                break;
+        }
+    }
+
+    private void hideKeyboard() {
+        View currentFocus = this.getCurrentFocus();
+        if (currentFocus != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
         }
     }
 }
