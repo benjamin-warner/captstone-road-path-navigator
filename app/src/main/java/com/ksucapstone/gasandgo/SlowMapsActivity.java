@@ -1,5 +1,6 @@
 package com.ksucapstone.gasandgo;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
@@ -8,11 +9,13 @@ import android.widget.ListView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.ksucapstone.gasandgo.ArrayAdapters.DirectionsAdapter;
@@ -32,15 +35,20 @@ public class SlowMapsActivity extends FragmentActivity implements OnMapReadyCall
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
     private LatLng mUserLocation;
+    private SupportMapFragment mMapFragment;
+    private PopupProgressMessage mLoadingMessage;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        mLoadingMessage = new PopupProgressMessage(this, false, ProgressDialog.STYLE_SPINNER);
+        mLoadingMessage.showWithMessage("Crunching numbers");
+
+        mMapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        mMapFragment.getMapAsync(this);
 
 
         mGoogleApiClient = new GoogleApiClient
@@ -69,7 +77,7 @@ public class SlowMapsActivity extends FragmentActivity implements OnMapReadyCall
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(37.5301914,-106.8468267), 4.f));
+        getSupportFragmentManager().beginTransaction().hide(mMapFragment).commit();
     }
 
     @Override
@@ -91,8 +99,21 @@ public class SlowMapsActivity extends FragmentActivity implements OnMapReadyCall
         for(Leg leg : directions.legs)
             steps.addAll(leg.steps);
 
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        for (LatLng point : routePoints) {
+            builder.include(point);
+        }
+        LatLngBounds bounds = builder.build();
+
+        int padding = 50; // offset from edges of the map in pixels
+        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+        mMap.moveCamera(cu);
+
         DirectionsAdapter mAdapter = new DirectionsAdapter(this, R.layout.leg_info, steps);
         ListView directionsListview = findViewById(R.id.directions_listview);
         directionsListview.setAdapter(mAdapter);
+
+        mLoadingMessage.dismiss();
+        getSupportFragmentManager().beginTransaction().show(mMapFragment).commit();
     }
 }

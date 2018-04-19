@@ -27,7 +27,7 @@ public class SlowDirectionsWrapper implements GetDirectionsAsync.Callback, GetGa
     private Callback callback;
     private Activity activity;
 
-    private long scrapeDelay = 10000;
+    private long scrapeDelay = 15000;
     private String source;
     private String destination;
     private CarModel car;
@@ -72,17 +72,22 @@ public class SlowDirectionsWrapper implements GetDirectionsAsync.Callback, GetGa
     @Override
     public void onGasStationsReceived(ArrayList<GasStationModel> gasStations) {
         LatLng searchLocation = refillNeededLocations.get(locationIndex);
+        Log.d(this.getClass().getSimpleName(), "ADDING " + searchLocation.toString() + " TO CACHE!");
         MemoryCache.GetInstance().put(searchLocation.toString(), gasStations);
         handleStationResponse(gasStations);
     }
 
     private void getGasStations(){
         LatLng searchLocation = refillNeededLocations.get(locationIndex);
+        Log.d(this.getClass().getSimpleName(), "SEARCHING FOR " + searchLocation.toString() + " IN CACHE.");
         if(MemoryCache.GetInstance().get(searchLocation.toString()) != null){
+            Log.d(this.getClass().getSimpleName(), searchLocation.toString() + " FOUND IN CACHE! HOORAY!");
             ArrayList<GasStationModel> stations = (ArrayList<GasStationModel>)MemoryCache.GetInstance().get(searchLocation.toString());
             handleStationResponse(stations);
         }
         else{
+            Log.d(this.getClass().getSimpleName(), searchLocation.toString() + " NOT IN CACHE!");
+            Log.d(this.getClass().getSimpleName(), "Scraping Gas Buddy");
             scrapeGasBuddy();
         }
     }
@@ -106,7 +111,6 @@ public class SlowDirectionsWrapper implements GetDirectionsAsync.Callback, GetGa
     }
 
     private void scrapeGasBuddy(){
-        Log.d(this.getClass().getSimpleName(), "Scraping Gas Buddy");
         final GetGasStationsAsync.GetGasStationsCallback callback = this;
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
