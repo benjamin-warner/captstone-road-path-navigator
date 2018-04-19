@@ -17,7 +17,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Cost: $"
-            android:textSize="32sp"
+            android:textSize="28sp"
             android:textColor="#000000"/>
 
         <TextView
@@ -26,7 +26,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Gallons: "
-            android:textSize="32sp"
+            android:textSize="28sp"
             android:textColor="#000000"/>
 
     </LinearLayout>
@@ -43,7 +43,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Distance: "
-            android:textSize="24sp"
+            android:textSize="20sp"
             android:textColor="#000000"/>
 
         <TextView
@@ -52,7 +52,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Time: "
-            android:textSize="24sp"
+            android:textSize="20sp"
             android:textColor="#000000"/>
 
     </LinearLayout>
