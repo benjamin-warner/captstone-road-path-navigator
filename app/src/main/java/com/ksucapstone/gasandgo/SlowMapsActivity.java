@@ -55,8 +55,8 @@ public class SlowMapsActivity extends FragmentActivity implements OnMapReadyCall
         mUserLocation = new LatLng(latitude, longitude);
 
         CarModel testCar = new CarModel();
-        testCar.Mpg = 15;
-        testCar.TankCapacity = 8;
+        testCar.Mpg = 32;
+        testCar.TankCapacity = 15;
         String origin = getIntent().getStringExtra("origin");
         String destination = getIntent().getStringExtra("destination");
 
