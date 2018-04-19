@@ -29,9 +29,10 @@ public class DirectionsIterator {
         if(pathCoords.size() <= 1){
             return refillPoints;
         }
-
+        double totalDistance = 0;
         for(int i = 1; i < pathCoords.size(); i++){
             double distance = DistanceHelper.MilesBetween(pathCoords.get(i), pathCoords.get(i-1));
+            totalDistance += distance;
             Log.d(this.getClass().getSimpleName(), "Distance " + distance);
             currentTankCapacity = currentTankCapacity - (distance / car.Mpg);
             Log.d(this.getClass().getSimpleName(), "Tank Cap " + currentTankCapacity);

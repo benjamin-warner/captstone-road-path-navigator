@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
+import android.view.View;
 import android.widget.ListView;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -110,18 +111,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
         mMap.moveCamera(cu);
 
-        populateDirections(direction.legs);
+        populateDirections(direction);
         mLoadingMessage.dismiss();
         getSupportFragmentManager().beginTransaction().show(mMapFragment).commit();
     }
 
-    public void populateDirections(ArrayList<Leg> routeLegs){
+    public void populateDirections(DirectionsModel directions){
         ArrayList<Step> steps = new ArrayList<>();
-        for(Leg leg : routeLegs)
+        for(Leg leg : directions.legs)
             steps.addAll(leg.steps);
 
         DirectionsAdapter mAdapter = new DirectionsAdapter(this, R.layout.leg_info, steps);
         ListView directionsListView = findViewById(R.id.directions_listview);
+        View header = View.inflate(this, R.layout.drive_stats, null);
+        directionsListView.addHeaderView(header);
         directionsListView.setAdapter(mAdapter);
     }
 

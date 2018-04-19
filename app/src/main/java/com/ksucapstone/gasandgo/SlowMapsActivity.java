@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
+import android.view.View;
 import android.widget.ListView;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -111,6 +112,8 @@ public class SlowMapsActivity extends FragmentActivity implements OnMapReadyCall
 
         DirectionsAdapter mAdapter = new DirectionsAdapter(this, R.layout.leg_info, steps);
         ListView directionsListview = findViewById(R.id.directions_listview);
+        View header = View.inflate(this, R.layout.drive_stats, null);
+        directionsListview.addHeaderView(header);
         directionsListview.setAdapter(mAdapter);
 
         mLoadingMessage.dismiss();
