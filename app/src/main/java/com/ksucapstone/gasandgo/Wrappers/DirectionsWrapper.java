@@ -9,12 +9,13 @@ import com.ksucapstone.gasandgo.Helpers.UrlBuilder;
 import com.ksucapstone.gasandgo.Iterators.DirectionsIterator;
 import com.ksucapstone.gasandgo.Models.CarModel;
 import com.ksucapstone.gasandgo.Models.Directions.DirectionsModel;
+import com.ksucapstone.gasandgo.Models.RefillModel;
 
 import java.util.List;
 
 public class DirectionsWrapper implements GetDirectionsAsync.Callback {
 
-    private List<LatLng> refillNeededLocations;
+    private List<RefillModel> refillNeededLocations;
     private Callback callback;
     private Activity activity;
 
@@ -52,6 +53,6 @@ public class DirectionsWrapper implements GetDirectionsAsync.Callback {
     }
 
     public interface Callback{
-        void onPathComputed(DirectionsModel direction, List<LatLng> refillPoints);
+        void onPathComputed(DirectionsModel direction, List<RefillModel> refillPoints);
     }
 }

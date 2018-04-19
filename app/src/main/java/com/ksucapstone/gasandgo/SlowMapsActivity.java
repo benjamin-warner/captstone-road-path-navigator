@@ -4,7 +4,9 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -19,15 +21,18 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.ksucapstone.gasandgo.ArrayAdapters.DirectionsAdapter;
+import com.ksucapstone.gasandgo.Helpers.DistanceHelper;
 import com.ksucapstone.gasandgo.Helpers.PolylineDecoder;
 import com.ksucapstone.gasandgo.Models.CarModel;
 import com.ksucapstone.gasandgo.Models.Directions.DirectionsModel;
 import com.ksucapstone.gasandgo.Models.Directions.Leg;
 import com.ksucapstone.gasandgo.Models.Directions.Step;
+import com.ksucapstone.gasandgo.Models.RefillModel;
 import com.ksucapstone.gasandgo.Wrappers.SlowDirectionsWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class SlowMapsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.OnConnectionFailedListener, SlowDirectionsWrapper.Callback{
@@ -86,7 +91,7 @@ public class SlowMapsActivity extends FragmentActivity implements OnMapReadyCall
     }
 
     @Override
-    public void onDirectionsComputed(DirectionsModel directions) {
+    public void onDirectionsComputed(DirectionsModel directions, List<RefillModel> refillPoints) {
         List<LatLng> routePoints = PolylineDecoder.decode(directions.polyline);
         mMap.addPolyline(new PolylineOptions().addAll(routePoints).color(0xff0000ff).width(20));
         LatLng start = new LatLng(directions.legs.get(0).start_location.lat,directions.legs.get(0).start_location.lng);
@@ -96,8 +101,13 @@ public class SlowMapsActivity extends FragmentActivity implements OnMapReadyCall
         }
 
         ArrayList<Step> steps = new ArrayList<>();
-        for(Leg leg : directions.legs)
+        int seconds = 0;
+        int meters = 0;
+        for(Leg leg : directions.legs) {
+            meters += leg.distance.value;
+            seconds += leg.duration.value;
             steps.addAll(leg.steps);
+        }
 
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         for (LatLng point : routePoints) {
@@ -110,10 +120,53 @@ public class SlowMapsActivity extends FragmentActivity implements OnMapReadyCall
         mMap.moveCamera(cu);
 
         DirectionsAdapter mAdapter = new DirectionsAdapter(this, R.layout.leg_info, steps);
-        ListView directionsListview = findViewById(R.id.directions_listview);
-        directionsListview.setAdapter(mAdapter);
+        ListView directionsListView = findViewById(R.id.directions_listview);
+
+        View header = View.inflate(this, R.layout.drive_stats, null);
+
+        double cost = 0;
+        double gallons = 0;
+        for(RefillModel refill : refillPoints){
+            cost += refill.cost;
+            gallons += refill.gallonsFilled;
+        }
+        String gallonStr = String.valueOf(gallons);
+        gallonStr = gallonStr.substring(0, 5);
+
+        String costStr = String.valueOf(cost);
+        costStr = costStr.substring(0, 5);
+
+        ((TextView)header.findViewById(R.id.trip_cost)).append(costStr);
+        ((TextView)header.findViewById(R.id.trip_gallons)).append(gallonStr);
+
+        String miles = String.valueOf(DistanceHelper.MetersToMiles(meters));
+        int decimalIndex = miles.indexOf('.');
+        miles = miles.substring(0,decimalIndex) + "mi";
+        ((TextView)header.findViewById(R.id.trip_distance)).append(miles);
+        ((TextView)header.findViewById(R.id.trip_time)).append(timeStringFromSeconds(seconds));
+
+        directionsListView.addHeaderView(header);
+        directionsListView.setAdapter(mAdapter);
 
         mLoadingMessage.dismiss();
         getSupportFragmentManager().beginTransaction().show(mMapFragment).commit();
+    }
+
+    String timeStringFromSeconds(long seconds){
+        long days = TimeUnit.SECONDS.toDays(seconds);
+        seconds -= TimeUnit.DAYS.toSeconds(days);
+
+        long hours = TimeUnit.SECONDS.toHours(seconds);
+        seconds -= TimeUnit.HOURS.toSeconds(hours);
+        long minutes = TimeUnit.SECONDS.toMinutes(seconds);
+
+        String time = "";
+        if(days > 0)
+            time += String.valueOf(days) + "d";
+        if(hours > 0)
+            time += String.valueOf(hours) + "h";
+        if(minutes > 0)
+            time += String.valueOf(minutes) + "m";
+        return time;
     }
 }

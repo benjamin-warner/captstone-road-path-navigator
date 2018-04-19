@@ -5,7 +5,9 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -30,6 +32,7 @@ import com.ksucapstone.gasandgo.Models.Directions.DirectionsModel;
 import com.ksucapstone.gasandgo.Models.Directions.Leg;
 import com.ksucapstone.gasandgo.Models.Directions.Step;
 import com.ksucapstone.gasandgo.Models.GasStationModel;
+import com.ksucapstone.gasandgo.Models.RefillModel;
 import com.ksucapstone.gasandgo.Wrappers.DirectionsWrapper;
 import com.ksucapstone.gasandgo.Wrappers.GasBuddyWrapper;
 
@@ -93,11 +96,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     @Override
-    public void onPathComputed(DirectionsModel direction, List<LatLng> refillPoints) {
+    public void onPathComputed(DirectionsModel direction, List<RefillModel> refillPoints) {
         List<LatLng> routePoints = PolylineDecoder.decode(direction.polyline);
         mMap.addPolyline(new PolylineOptions().addAll(routePoints).color(0xff0000ff).width(20));
-        for(LatLng refillPoint : refillPoints){
-            mMap.addMarker(new MarkerOptions().position(refillPoint));
+        for(RefillModel refillPoint : refillPoints){
+            mMap.addMarker(new MarkerOptions().position(refillPoint.location));
         }
 
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
@@ -110,18 +113,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
         mMap.moveCamera(cu);
 
-        populateDirections(direction.legs);
+        populateDirections(direction, refillPoints);
         mLoadingMessage.dismiss();
         getSupportFragmentManager().beginTransaction().show(mMapFragment).commit();
     }
 
-    public void populateDirections(ArrayList<Leg> routeLegs){
+    public void populateDirections(DirectionsModel directions, List<RefillModel> refillPoints){
         ArrayList<Step> steps = new ArrayList<>();
-        for(Leg leg : routeLegs)
+        for(Leg leg : directions.legs)
             steps.addAll(leg.steps);
 
         DirectionsAdapter mAdapter = new DirectionsAdapter(this, R.layout.leg_info, steps);
         ListView directionsListView = findViewById(R.id.directions_listview);
+
+        View header = View.inflate(this, R.layout.drive_stats, null);
+
+        directionsListView.addHeaderView(header);
         directionsListView.setAdapter(mAdapter);
     }
 
