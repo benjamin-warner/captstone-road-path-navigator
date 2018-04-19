@@ -113,7 +113,7 @@ public class SlowMapsActivity extends FragmentActivity implements OnMapReadyCall
         mMap.moveCamera(cu);
 
         DirectionsAdapter mAdapter = new DirectionsAdapter(this, R.layout.leg_info, steps);
-        ListView directionsListview = findViewById(R.id.directions_listview);
+        ListView directionsListView = findViewById(R.id.directions_listview);
 
         View header = View.inflate(this, R.layout.drive_stats, null);
 
@@ -123,13 +123,19 @@ public class SlowMapsActivity extends FragmentActivity implements OnMapReadyCall
             cost += refill.cost;
             gallons += refill.gallonsFilled;
         }
-        ((TextView)header.findViewById(R.id.trip_cost)).append(String.valueOf(cost));
-        ((TextView)header.findViewById(R.id.trip_gallons)).append(String.valueOf(gallons));
+        String gallonStr = String.valueOf(gallons);
+        gallonStr = gallonStr.substring(0, 5);
+
+        String costStr = String.valueOf(cost);
+        costStr = costStr.substring(0, 5);
+
+        ((TextView)header.findViewById(R.id.trip_cost)).append(costStr);
+        ((TextView)header.findViewById(R.id.trip_gallons)).append(gallonStr);
 //        ((TextView)header.findViewById(R.id.trip_distance)).setText();
 //        ((TextView)header.findViewById(R.id.trip_time)).setText();
 
-        directionsListview.addHeaderView(header);
-        directionsListview.setAdapter(mAdapter);
+        directionsListView.addHeaderView(header);
+        directionsListView.setAdapter(mAdapter);
 
         mLoadingMessage.dismiss();
         getSupportFragmentManager().beginTransaction().show(mMapFragment).commit();
