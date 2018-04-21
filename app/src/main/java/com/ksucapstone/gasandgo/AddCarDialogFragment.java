@@ -2,6 +2,7 @@ package com.ksucapstone.gasandgo;
 
 import android.app.DialogFragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,13 +21,9 @@ import com.ksucapstone.gasandgo.Repositories.MemoryCache;
 
 import java.util.ArrayList;
 
-import static com.google.firebase.auth.FirebaseAuth.getInstance;
-
 public class AddCarDialogFragment extends DialogFragment implements View.OnClickListener, DatabaseWrapper.DataSnapshotReceiver {
 
     public static final String TAG = "ADD_CAR_FRAGMENT";
-
-    private Spinner companySpinner;
     private Spinner makeSpinner;
     private Spinner modelSpinner;
 
@@ -39,16 +36,18 @@ public class AddCarDialogFragment extends DialogFragment implements View.OnClick
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_add_car, container, false);
-        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
         makeSpinner = rootView.findViewById(R.id.spinner_make);
         modelSpinner = rootView.findViewById(R.id.spinner_model);
 
         rootView.findViewById(R.id.button_add_car).setOnClickListener(this);
 
-        if(MemoryCache.GetInstance().get("Cars") == null)
+        if(MemoryCache.GetInstance().get("Cars") == null) {
+            Log.d("Car Cache", "Cars not in cache, building.");
             databaseWrapper.queryOnceForSingleObject("Cars/");
+        }
         else {
+            Log.d("Car Cache",  "Makes in cache.");
             cars = (ArrayList<CarModel>) MemoryCache.GetInstance().get("Cars");
             populateMakes();
         }
@@ -59,8 +58,10 @@ public class AddCarDialogFragment extends DialogFragment implements View.OnClick
     private void populateMakes(){
         if(MemoryCache.GetInstance().get("Makes") != null){
             makes = (ArrayList<String>)MemoryCache.GetInstance().get("Makes");
+            Log.d("Car Cache",  "Makes in cache.");
         }
         else{
+            Log.d("Car Cache",  "Makes not in cache, building.");
             makes = new ArrayList<>();
             for(CarModel car : cars){
                 if(!makes.contains(car.Make))
@@ -86,9 +87,11 @@ public class AddCarDialogFragment extends DialogFragment implements View.OnClick
 
     private void populateModels(String make){
         if(MemoryCache.GetInstance().get(make) != null){
-            models = (ArrayList<String>)MemoryCache.GetInstance().get("Models");
+            models = (ArrayList<String>)MemoryCache.GetInstance().get(make);
+            Log.d("Car Cache", make + " found in cache");
         }
         else{
+            Log.d("Car Cache", make + " not in cache, building.");
             models = new ArrayList<>();
             for(CarModel car : cars){
                 if(car.Make.equals(make) && !models.contains(car.Model)){
@@ -128,6 +131,7 @@ public class AddCarDialogFragment extends DialogFragment implements View.OnClick
             case R.id.button_add_car:
                 String user = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 FirebaseDatabase.getInstance().getReference().child(user).child("AvailableCars").push().setValue(currentIndex);
+                dismiss();
                 break;
         }
     }
