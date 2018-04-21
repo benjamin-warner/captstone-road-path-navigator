@@ -1,6 +1,8 @@
 package com.ksucapstone.gasandgo;
 
+import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +22,7 @@ import com.ksucapstone.gasandgo.Repositories.DatabaseWrapper;
 import com.ksucapstone.gasandgo.Repositories.MemoryCache;
 
 import java.util.ArrayList;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class AddCarDialogFragment extends DialogFragment implements View.OnClickListener, DatabaseWrapper.DataSnapshotReceiver {
 
@@ -32,6 +35,7 @@ public class AddCarDialogFragment extends DialogFragment implements View.OnClick
     private ArrayList<String> makes;
     private ArrayList<String> models;
     private int currentIndex;
+    private ProfileActivity activity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -55,7 +59,18 @@ public class AddCarDialogFragment extends DialogFragment implements View.OnClick
         return rootView;
     }
 
+    @Override
+    public void onAttach(Context ctx){
+        super.onAttach(ctx);
+        activity = (ProfileActivity)ctx;
+    }
     private void populateMakes(){
+        for(int i = 0; i < cars.size(); i++){
+            int fuckingrandotankcap = ThreadLocalRandom.current().nextInt(15, 21);
+            cars.get(i).TankCapacity = fuckingrandotankcap;
+        }
+        FirebaseDatabase.getInstance().getReference().child("Cars").setValue(cars);
+
         if(MemoryCache.GetInstance().get("Makes") != null){
             makes = (ArrayList<String>)MemoryCache.GetInstance().get("Makes");
             Log.d("Car Cache",  "Makes in cache.");
@@ -131,6 +146,7 @@ public class AddCarDialogFragment extends DialogFragment implements View.OnClick
             case R.id.button_add_car:
                 String user = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 FirebaseDatabase.getInstance().getReference().child(user).child("AvailableCars").push().setValue(currentIndex);
+                activity.addAnotherCar(currentIndex);
                 dismiss();
                 break;
         }
