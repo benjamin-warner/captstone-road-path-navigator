@@ -67,14 +67,12 @@ public class SlowMapsActivity extends FragmentActivity implements OnMapReadyCall
         double longitude = getIntent().getDoubleExtra("LONGITUDE", 0.0);
         mUserLocation = new LatLng(latitude, longitude);
 
-        CarModel testCar = new CarModel();
-        testCar.Mpg = 32;
-        testCar.TankCapacity = 15;
+        CarModel userCar = (CarModel)getIntent().getSerializableExtra("car");
         String origin = getIntent().getStringExtra("origin");
         String destination = getIntent().getStringExtra("destination");
 
         SlowDirectionsWrapper directionsWrapper = new SlowDirectionsWrapper(this, this)
-                .setRoute(origin, destination).setCar(testCar);
+                .setRoute(origin, destination).setCar(userCar);
         directionsWrapper.getDirections();
     }
 
@@ -131,10 +129,12 @@ public class SlowMapsActivity extends FragmentActivity implements OnMapReadyCall
             gallons += refill.gallonsFilled;
         }
         String gallonStr = String.valueOf(gallons);
-        gallonStr = gallonStr.substring(0, 5);
+        if(gallonStr.length() >= 5)
+            gallonStr = gallonStr.substring(0, 5);
 
         String costStr = String.valueOf(cost);
-        costStr = costStr.substring(0, 5);
+        if(costStr.length() >= 5)
+            costStr = costStr.substring(0, 5);
 
         ((TextView)header.findViewById(R.id.trip_cost)).append(costStr);
         ((TextView)header.findViewById(R.id.trip_gallons)).append(gallonStr);
