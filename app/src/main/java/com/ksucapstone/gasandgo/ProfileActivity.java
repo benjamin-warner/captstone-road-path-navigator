@@ -1,5 +1,6 @@
 package com.ksucapstone.gasandgo;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -45,7 +46,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         buttonLogout = findViewById(R.id.buttonLogout);
 
         buttonLogout.setOnClickListener(this);
-        findViewById(R.id.buttonGetRoute).setOnClickListener(this);
+        findViewById(R.id.buttonAddCar).setOnClickListener(this);
         findViewById(R.id.buttonDoItForMe).setOnClickListener(this);
 
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
@@ -83,12 +84,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 startActivity(new Intent(this, TabbedLogin.class));
                 finish();
                 break;
-            case R.id.buttonGetRoute:
-                hideKeyboard();
-                Intent intent = new Intent(this, MapsActivity.class);
-                intent.putExtra("origin", origin);
-                intent.putExtra("destination", destination);
-                startActivity(intent);
+            case R.id.buttonAddCar:
+                AddCarDialogFragment addCarPopup = new AddCarDialogFragment();
+                addCarPopup.show(getFragmentManager(), AddCarDialogFragment.TAG);
                 break;
             case R.id.buttonDoItForMe:
                 hideKeyboard();

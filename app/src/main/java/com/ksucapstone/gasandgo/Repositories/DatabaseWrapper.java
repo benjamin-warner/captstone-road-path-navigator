@@ -38,6 +38,12 @@ public class DatabaseWrapper implements ValueEventListener {
         query.addListenerForSingleValueEvent(this);
     }
 
+    public void queryForField(String directory, String field,String where, String equals){
+        Query query = mDatabaseReference.child(directory).orderByChild(where).equalTo(equals);
+        query.addListenerForSingleValueEvent(this);
+    }
+
+
     public void queryOnceForSingleObject(String directory) {
         mDatabaseReference.child(directory).addListenerForSingleValueEvent(this);
     }
