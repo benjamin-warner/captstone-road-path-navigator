@@ -7,9 +7,12 @@ import android.util.Log;
 import com.google.android.gms.maps.model.LatLng;
 import com.ksucapstone.gasandgo.AsyncTasks.GetDirectionsAsync;
 import com.ksucapstone.gasandgo.AsyncTasks.GetGasStationsAsync;
+import com.ksucapstone.gasandgo.Helpers.BestStationHelper;
 import com.ksucapstone.gasandgo.Helpers.ManifestDataHelper;
+import com.ksucapstone.gasandgo.Helpers.PriceFinder;
 import com.ksucapstone.gasandgo.Helpers.UrlBuilder;
 import com.ksucapstone.gasandgo.Interfaces.IGasStationGetter;
+import com.ksucapstone.gasandgo.Interfaces.IGetAveragePrice;
 import com.ksucapstone.gasandgo.Iterators.DirectionsIterator;
 import com.ksucapstone.gasandgo.Models.CarModel;
 import com.ksucapstone.gasandgo.Models.Directions.DirectionsModel;
@@ -72,6 +75,13 @@ public class SlowDirectionsWrapper implements GetDirectionsAsync.Callback, GetGa
 
     @Override
     public void onGasStationsReceived(ArrayList<GasStationModel> gasStations) {
+        if(gasStations.isEmpty()){
+            IGetAveragePrice priceGetter = new PriceFinder();
+            GasStationModel averageStation = new GasStationModel();
+            averageStation.price = priceGetter.getPrice();
+            averageStation.latLng = refillNeededLocations.get(locationIndex).location;
+            gasStations.add(averageStation);
+        }
         LatLng searchLocation = refillNeededLocations.get(locationIndex).location;
         Log.d(this.getClass().getSimpleName(), "ADDING " + searchLocation.toString() + " TO CACHE!");
         MemoryCache.GetInstance().put(searchLocation.toString(), gasStations);
@@ -94,7 +104,13 @@ public class SlowDirectionsWrapper implements GetDirectionsAsync.Callback, GetGa
     }
 
     private void handleStationResponse(ArrayList<GasStationModel> gasStations) {
-        GasStationModel stationToUse = gasStations.get(0);
+        for(GasStationModel station : gasStations){
+            if(station.price < 0.){
+                IGetAveragePrice price = new PriceFinder();
+                station.price = price.getPrice();
+            }
+        }
+        GasStationModel stationToUse = BestStationHelper.findBestGasStation(gasStations, car.Mpg);
         stationsToStopAt.add(stationToUse);
         refillNeededLocations.get(locationIndex).cost = refillNeededLocations.get(locationIndex).gallonsFilled * stationToUse.price;
         locationIndex++;
