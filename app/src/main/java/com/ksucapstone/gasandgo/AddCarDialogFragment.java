@@ -65,12 +65,6 @@ public class AddCarDialogFragment extends DialogFragment implements View.OnClick
         activity = (ProfileActivity)ctx;
     }
     private void populateMakes(){
-        for(int i = 0; i < cars.size(); i++){
-            int fuckingrandotankcap = ThreadLocalRandom.current().nextInt(15, 21);
-            cars.get(i).TankCapacity = fuckingrandotankcap;
-        }
-        FirebaseDatabase.getInstance().getReference().child("Cars").setValue(cars);
-
         if(MemoryCache.GetInstance().get("Makes") != null){
             makes = (ArrayList<String>)MemoryCache.GetInstance().get("Makes");
             Log.d("Car Cache",  "Makes in cache.");
