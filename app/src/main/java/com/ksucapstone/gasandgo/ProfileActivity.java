@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -32,6 +33,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private Button buttonLogout;
     private String destination = "";
     private String origin = "";
+    private int tankCap = 0;
 
     private ArrayList<CarModel> userCars = new ArrayList<>();
     private Spinner carSpinner;
@@ -44,7 +46,18 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         firebaseAuth = FirebaseAuth.getInstance();
 
+        Spinner tank = findViewById(R.id.spinner_tank);
+        tank.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                tankCap = 0;
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         if(firebaseAuth.getCurrentUser() == null) {
             finish();
@@ -137,11 +150,27 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                     Intent doItForMe = new Intent(this, SlowMapsActivity.class);
                     doItForMe.putExtra("origin", origin);
                     doItForMe.putExtra("destination", destination);
+                    doItForMe.putExtra("tank", getTankCap());
                     CarModel car = (CarModel) carSpinner.getSelectedItem();
                     doItForMe.putExtra("car", car);
                     startActivity(doItForMe);
                 }
                 break;
+        }
+    }
+
+    private double getTankCap() {
+        switch(tankCap){
+            case 0:
+                return 1.00;
+            case 1:
+                return 0.75;
+            case 2:
+                return 0.50;
+            case 3:
+                return 0.25;
+            default:
+                return 1;
         }
     }
 

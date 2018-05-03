@@ -71,8 +71,10 @@ public class SlowMapsActivity extends FragmentActivity implements OnMapReadyCall
         String origin = getIntent().getStringExtra("origin");
         String destination = getIntent().getStringExtra("destination");
 
+        double tank = getIntent().getDoubleExtra("tank", 1.0);
+
         SlowDirectionsWrapper directionsWrapper = new SlowDirectionsWrapper(this, this)
-                .setRoute(origin, destination).setCar(userCar);
+                .setRoute(origin, destination).setCar(userCar, tank);
         directionsWrapper.getDirections();
     }
 

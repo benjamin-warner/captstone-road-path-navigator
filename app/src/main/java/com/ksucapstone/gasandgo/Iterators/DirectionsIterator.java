@@ -20,9 +20,9 @@ public class DirectionsIterator {
         pathCoords = PolylineDecoder.decode(directionsModel.polyline);
     }
 
-    public List<RefillModel> FindRefillPointsForCar(CarModel car){
+    public List<RefillModel> FindRefillPointsForCar(CarModel car, double currentTank){
 
-        double currentTankCapacity = car.TankCapacity;
+        double currentTankCapacity = car.TankCapacity * currentTank;
 
         List<RefillModel> refillPoints = new ArrayList<>();
         if(pathCoords.size() <= 1){
@@ -33,7 +33,7 @@ public class DirectionsIterator {
             Log.d(this.getClass().getSimpleName(), "Distance " + distance);
             currentTankCapacity = currentTankCapacity - (distance / car.Mpg);
             Log.d(this.getClass().getSimpleName(), "Tank Cap " + currentTankCapacity);
-            if(currentTankCapacity < (car.TankCapacity / 4)){
+            if(currentTankCapacity < (car.TankCapacity / 5)){
                 RefillModel newRefill = new RefillModel();
                 newRefill.location = pathCoords.get(i);
                 newRefill.gallonsFilled = car.TankCapacity - currentTankCapacity;

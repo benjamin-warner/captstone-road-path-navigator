@@ -48,7 +48,7 @@ public class DirectionsWrapper implements GetDirectionsAsync.Callback {
     @Override
     public void onResponseReceived(DirectionsModel directions) {
         DirectionsIterator directionsIterator = new DirectionsIterator(directions);
-        refillNeededLocations = directionsIterator.FindRefillPointsForCar(car);
+        refillNeededLocations = directionsIterator.FindRefillPointsForCar(car, 0.0);
         callback.onPathComputed(directions, refillNeededLocations);
     }
 

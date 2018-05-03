@@ -13,4 +13,11 @@
     <string name="facebook_app_id">196276157652818</string>
     <string name="fb_login_protocol_scheme">fb196276157652818</string>
 
+    <string-array name="tank">
+        <item>Full</item>
+        <item>3/4</item>
+        <item>1/2</item>
+        <item>1/4</item>
+    </string-array>
+
 </resources>

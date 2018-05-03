@@ -35,6 +35,7 @@ public class SlowDirectionsWrapper implements GetDirectionsAsync.Callback, GetGa
     private String source;
     private String destination;
     private CarModel car;
+    private double tank;
 
     public SlowDirectionsWrapper(Activity activity, Callback callback){
         this.callback = callback;
@@ -47,8 +48,9 @@ public class SlowDirectionsWrapper implements GetDirectionsAsync.Callback, GetGa
         return this;
     }
 
-    public SlowDirectionsWrapper setCar(CarModel car){
+    public SlowDirectionsWrapper setCar(CarModel car, double tank){
         this.car = car;
+        this.tank = tank;
         return this;
     }
 
@@ -61,7 +63,7 @@ public class SlowDirectionsWrapper implements GetDirectionsAsync.Callback, GetGa
     @Override
     public void onResponseReceived(DirectionsModel directions) {
         DirectionsIterator directionsIterator = new DirectionsIterator(directions);
-        refillNeededLocations = directionsIterator.FindRefillPointsForCar(car);
+        refillNeededLocations = directionsIterator.FindRefillPointsForCar(car, tank);
         stationsToStopAt = new ArrayList<>();
         locationIndex = 0;
         if(locationIndex < refillNeededLocations.size()) {
