@@ -111,7 +111,7 @@ public class TabbedLogin extends AppCompatActivity implements View.OnClickListen
                         if(task.isSuccessful()) {
                             //user registration is successful
                             if(firebaseAuth.getCurrentUser() != null) {
-                                //profile activity here (user already logged in)
+                                progressDialog.cancel();
                                 finish();
                                 startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
                             }
