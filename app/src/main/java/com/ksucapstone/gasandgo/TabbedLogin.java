@@ -83,21 +83,25 @@ public class TabbedLogin extends AppCompatActivity implements View.OnClickListen
             return;
         }
 
-        if(TextUtils.isEmpty(password) || TextUtils.isEmpty(passwordConfirm)) { //password is empty
+        else if(TextUtils.isEmpty(password) || TextUtils.isEmpty(passwordConfirm)) { //password is empty
             Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
+            return;
         }
 
-        if(TextUtils.isEmpty(postalCode)) {
+        else if(TextUtils.isEmpty(postalCode)) {
             Toast.makeText(this, "Please enter your postal code", Toast.LENGTH_SHORT).show();
+            return;
         }
 
-        if(password != passwordConfirm) {
+        if(!password.equals(passwordConfirm)) {
             Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+            return;
         }
 
         //if validation is okay
         //we will first show a progress bar
         progressDialog.setMessage("Registering...");
+        progressDialog.setCancelable(false);
         progressDialog.show();
 
         firebaseAuth.createUserWithEmailAndPassword(email, password)
@@ -113,7 +117,8 @@ public class TabbedLogin extends AppCompatActivity implements View.OnClickListen
                             }
                         }
                         else {
-                            Toast.makeText(TabbedLogin.this, "Failed to Register", Toast.LENGTH_SHORT).show();
+                            progressDialog.cancel();
+                            Toast.makeText(TabbedLogin.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
 
                     }
